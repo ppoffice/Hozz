@@ -12,12 +12,11 @@
   },
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial"
+    "hosts",
+    "all-platform"
   ],
   "author": "PPOffice",
-  "license": "MIT",
+  "license": "BSD",
   "bugs": {
     "url": "https://github.com/ppoffice/Hozz/issues"
   },
