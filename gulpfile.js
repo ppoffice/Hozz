@@ -79,6 +79,14 @@ var deleteUselessFiles = function (platform, distPath) {
                 '*.html',
                 'LICENSE',
                 'version',
+                '/' + APP_NAME + '.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/snapshot_blob.bin',
+            ];
+            break;
+        case 'linux':
+            filesToBeRemoved = [
+                '*.html',
+                'LICENSE',
+                'version',
                 'locales/*.*',
                 'snapshot_blob.bin',
                 './resources/default_app',
@@ -105,6 +113,9 @@ var compressFiles = function (platform, distPath, callback) {
                 APP_NAME + '.exe',
             ];
             break;
+        case 'darwin':
+            upx = path.join(__dirname, 'tools/upx');
+            break;
         case 'linux':
             upx = path.join(__dirname, 'tools/upx-' + process.arch);
             filesToBeCompressed = [
@@ -118,7 +129,7 @@ var compressFiles = function (platform, distPath, callback) {
         var fullPath = path.join(distPath, file);
         childProcess.exec(upx + ' -9 ' + fullPath, function (error, stdout, stderr) {
             if (error) {
-                gutil.error(error);
+                gutil.log(error);
             }
             gutil.log(stdout, stderr);
         });
