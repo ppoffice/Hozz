@@ -23,8 +23,8 @@ const updateStatus = (function () {
 global.updateStatus = updateStatus;
 
 if (process.platform === 'linux') {
-    app.commandLine.appendSwitch('--enable-transparent-visuals');
-    app.commandLine.appendSwitch('--disable-gpu');
+    app.commandLine.appendSwitch('enable-transparent-visuals');
+    app.commandLine.appendSwitch('disable-gpu');
 }
 
 // Quit when all windows are closed.

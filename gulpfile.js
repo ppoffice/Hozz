@@ -74,7 +74,7 @@ var deleteUselessFiles = function (platform, distPath) {
                 'content_resources_200_percent.pak',
             ];
             break;
-        case 'linux':
+        case 'darwin':
             filesToBeRemoved = [
                 '*.html',
                 'LICENSE',
