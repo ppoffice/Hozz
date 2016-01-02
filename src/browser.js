@@ -3,7 +3,60 @@ const path = require('path');
 const electron = require('electron');
 
 const app = electron.app;
+const Menu = electron.Menu;
 const BrowserWindow = electron.BrowserWindow;
+
+const menuTemplate = [
+    {
+        label: 'Hozz',
+        submenu: [
+            {
+                label: 'Exit',
+                accelerator: 'Cmd+Q',
+                selector: 'terminate:'
+            }
+        ]
+    },
+    {
+        label: 'Edit',
+        submenu: [
+            {
+                label: 'Undo',
+                accelerator: 'Cmd+Z',
+                selector: 'undo:'
+            },
+            {
+                label: 'Redo',
+                accelerator: 'Shift+Cmd+Z',
+                selector: 'redo:'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: 'Cut',
+                accelerator: 'Cmd+X',
+                selector: 'cut:'
+            },
+            {
+                label: 'Copy',
+                accelerator: 'Cmd+C',
+                selector: 'copy:'
+            },
+            {
+                label: 'Paste',
+                accelerator: 'Cmd+V',
+                selector: 'paste:'
+            },
+            {
+                label: 'Select All',
+                accelerator: 'Cmd+A',
+                selector: 'selectAll:'
+            }
+        ]
+    },
+];
+const menu = Menu.buildFromTemplate(menuTemplate);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -61,9 +114,11 @@ app.on('ready', function () {
     });
 
     mainWindow.loadURL('file://' + __dirname + '/index.html');
-
-    // mainWindow.hide();
     // mainWindow.webContents.openDevTools();
+
+    if (process.platform == "darwin") {
+        Menu.setApplicationMenu(menu);
+    };
 
     mainWindow.on('closed', function() {
         mainWindow = null;
