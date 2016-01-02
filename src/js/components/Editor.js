@@ -9,6 +9,10 @@ class Editor extends Component {
         };
     }
 
+    componentWillReceiveProps (props) {
+        this.setState({ value: props.value });
+    }
+
     componentWillUnmount () {
         const { uid, onTextShouldUpdate } = this.props;
         onTextShouldUpdate && onTextShouldUpdate(uid, this.state.value);
