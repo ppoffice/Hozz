@@ -31,7 +31,11 @@ let settingsWindow;
 
 event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
     if (!appIcon) {
-        appIcon = new Tray(path.join(global.__dirname, './assets/images/icon@16px.png'));
+        if (process.platform === 'darwin') {
+            appIcon = new Tray(path.join(global.__dirname, './assets/images/tray-osx.png'));
+        } else  {
+            appIcon = new Tray(path.join(global.__dirname, './assets/images/icon@16px.png'));
+        }
         appIcon.setToolTip(APP_NAME);
         appIcon.on('click', focusCurrentWindow);
     }
