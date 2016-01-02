@@ -2,3 +2,6 @@
 logs
 
 *~
+/app
+/build
+node_modules
