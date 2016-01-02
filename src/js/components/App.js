@@ -3,9 +3,11 @@ import Dropzone from 'react-dropzone';
 import dragula from 'react-dragula';
 
 import { EVENT,
+         APP_NAME,
          TOTAL_HOSTS_UID,
          NO_PERM_ERROR_TAG,
          NO_PERM_ERROR_TAG_WIN32 } from '../constants';
+import codemirrorOptions from '../codemirror.config.js';
 
 import io from '../backend/io';
 import event from '../backend/event';
@@ -14,8 +16,10 @@ import nw from '../backend/nw.interface';
 import Manifest from '../backend/manifest';
 import permission from '../backend/permission';
 
+import Editor from './Editor';
 import Sidebar from './Sidebar';
-import MainContainer from './MainContainer';
+import Titlebar from './Titlebar';
+import SnackBar from './SnackBar';
 
 const getPosition = (element) => {
     return Array.prototype.slice.call(element.parentElement.children).indexOf(element);
@@ -50,11 +54,6 @@ class App extends Component {
         const drake = dragula([document.querySelector('.sidebar-list-dragable')]);
         drake.on('drag', (element) => {
             this.dragStartPosition = getPosition(element);
-            // Fix hosts won't save on sidebar item dragging
-            if (this.refs.mainContainer && this.refs.mainContainer.refs.codemirror) {
-                const codemirror = this.refs.mainContainer.refs.codemirror.getCodeMirror();
-                codemirror.getInputField().blur();
-            }
         });
         drake.on('drop', (element) => {
             const { manifest } = this.state;
@@ -111,11 +110,12 @@ class App extends Component {
         event.emit(EVENT.SET_HOSTS_MENU, menus);
     }
 
-    __updateHosts (text) {
-        const { activeUid, manifest } = this.state;
-        if (activeUid !== TOTAL_HOSTS_UID) {
-            manifest.getHostsByUid(activeUid).setText(text);
-            manifest.getHostsByUid(activeUid).save();
+    __updateHosts (uid, text) {
+        const { manifest } = this.state;
+        const hosts = manifest.getHostsByUid(uid);
+        if (uid !== TOTAL_HOSTS_UID && hosts) {
+            hosts.setText(text);
+            hosts.save();
             manifest.commit();
             this.__updateManifest(manifest);
         }
@@ -228,17 +228,23 @@ class App extends Component {
                 return hosts.name.indexOf(searchText) > -1 || hosts.text.indexOf(searchText) > -1;
             });
         }
-        let currentActiveHosts = null;
-        let currenteditingHosts = null;
+        let activeHosts = null;
         if (activeUid !== null) {
             if (activeUid !== TOTAL_HOSTS_UID) {
-                currentActiveHosts = manifest.getHostsByUid(activeUid);
+                activeHosts = manifest.getHostsByUid(activeUid);
             } else {
-                currentActiveHosts = this.totalHosts;
+                activeHosts = this.totalHosts;
             }
         }
+        let editingHosts = null;
         if (editingUid !== null) {
-            currenteditingHosts = manifest.getHostsByUid(editingUid);
+            editingHosts = manifest.getHostsByUid(editingUid);
+        }
+        let cmOptions = codemirrorOptions;
+        if (activeHosts && (TOTAL_HOSTS_UID === activeHosts.uid || activeHosts.url)) {
+            cmOptions = Object.assign({}, cmOptions, { readOnly: true });
+        } else {
+            cmOptions = Object.assign({}, cmOptions, { readOnly: false });
         }
         return (<div>
                     <Dropzone
@@ -251,7 +257,7 @@ class App extends Component {
                                 list={ list }
                                 activeUid={ activeUid }
                                 totalHosts={ this.totalHosts }
-                                editingHosts={ currenteditingHosts }
+                                editingHosts={ editingHosts }
                                 onItemEdit={ this.__onHostsEdit.bind(this) }
                                 onItemClick={ this.__onHostsClick.bind(this) }
                                 onItemRemove={ this.__onHostsRemove.bind(this) }
@@ -261,12 +267,23 @@ class App extends Component {
                                 onItemStatusChange={ this.__onHostsStatusChange.bind(this) } />
                         </div>
                     </Dropzone>
-                    <MainContainer
-                        snack={ snack }
-                        ref="mainContainer"
-                        currentActiveHosts={ currentActiveHosts }
-                        onSnackDismiss={ this.__onSnackDismiss.bind(this) }
-                        onHostsTextChange={ this.__updateHosts.bind(this) } />
+                    <div className="main-container">
+                        <Titlebar title={ activeHosts ? activeHosts.name : APP_NAME } />
+                        { snack !== null ?
+                            <SnackBar
+                                type={ snack.type }
+                                text={ snack.text }
+                                actions={ snack.actions }
+                                onDismiss={ __onSnackDismiss } /> :
+                            null }
+                        { activeHosts ?
+                            <Editor
+                                uid={ activeUid }
+                                key={ activeUid }
+                                options={ cmOptions }
+                                value={ activeHosts.text }
+                                onTextShouldUpdate={ this.__updateHosts.bind(this) } /> : null }
+                    </div>
                 </div>);
     }
 }

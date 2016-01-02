@@ -12,10 +12,10 @@
 * Export hosts file to [Surge](https://surge.run/manual/) config file
 
 ## Known Issues
-* Cannot save changes when switch to other hosts while the code editor has the focus
 * Experience an error dialog when exiting on some occasions
 * Wrong window height/width when maximized on Windows
 * Window get ghost shadows sometimes on OS X
+* Cannot paste to the url input on OS X
 * Get black background on startup on Linux due to the due to [graphics issues](https://github.com/atom/electron/issues/2170), and this will soon disappear
 * Tray icon does not show on Linux
 
