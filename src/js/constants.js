@@ -3,7 +3,7 @@ const path = require('path');
 import keymirror from 'keymirror';
 
 export const APP_NAME = 'Hozz';
-export const APP_VERSION = '0.0.2';
+export const APP_VERSION = '0.0.3';
 export const APP_AUTHER = 'PPOffice';
 export const APP_HOMEPAGE = 'https://ppoffice.github.io/Hozz';
 export const APP_RELEASES_URL = `https://api.github.com/repos/ppoffice/${ APP_NAME }/releases`;
