@@ -15,9 +15,8 @@
 * Experience an error dialog when exiting on some occasions
 * Wrong window height/width when maximized on Windows
 * Window get ghost shadows sometimes on OS X
-* Cannot paste to the url input on OS X
-* Get black background on startup on Linux due to the due to [graphics issues](https://github.com/atom/electron/issues/2170), and this will soon disappear
-* Tray icon does not show on Linux
+* Get black background on startup on Linux due to the due to graphics issues ([Electron#2170](https://github.com/atom/electron/issues/2170)), and this will soon disappear
+* If the tray icon does not appears on Linux, you need to install `libappindicator1` according to [Electron#1347](https://github.com/atom/electron/issues/1347)
 
 ## Development
 
