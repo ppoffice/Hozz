@@ -61,9 +61,7 @@ var deleteUselessFiles = function (platform, distPath) {
                 'LICENSE',
                 'version',
                 'pdf.dll',
-                'libEGL.dll',
                 'locales/*.*',
-                'libGLESv2.dll',
                 'xinput1_3.dll',
                 'd3dcompiler.dll',
                 'vccorlib120.dll',
@@ -108,8 +106,10 @@ var compressFiles = function (platform, distPath, callback) {
             upx = path.join(__dirname, 'tools/upx.exe')
             filesToBeCompressed = [
                 'node.dll',
+                'libEGL.dll',
                 'msvcr120.dll',
                 'msvcp120.dll',
+                'libGLESv2.dll',
                 APP_NAME + '.exe',
             ];
             break;
