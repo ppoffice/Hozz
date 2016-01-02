@@ -274,7 +274,7 @@ class App extends Component {
                                 type={ snack.type }
                                 text={ snack.text }
                                 actions={ snack.actions }
-                                onDismiss={ __onSnackDismiss } /> :
+                                onDismiss={ this.__onSnackDismiss.bind(this) } /> :
                             null }
                         { activeHosts ?
                             <Editor

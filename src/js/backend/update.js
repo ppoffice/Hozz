@@ -50,7 +50,7 @@ const checkUpdate = (isBackend = false) => {
                 type: 'info',
                 title: 'Check Update',
                 message: 'Found New Version: ' + latestVersion,
-                detail: `${ latestRelease.body || '' }\nDo you want to update to the latest version?`,
+                detail: `${ latestRelease.body || '' }\n\nDo you want to update to the latest version?`,
             });
             if (confirm === 0) {
                 return Promise.resolve(latestRelease);
