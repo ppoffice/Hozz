@@ -61,6 +61,7 @@ const menu = Menu.buildFromTemplate(menuTemplate);
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let settingsWindow;
 
 const updateStatus = (function () {
     let __updateStatus = '';
@@ -112,15 +113,31 @@ app.on('ready', function () {
         transparent: true,
         icon: path.join(__dirname, './assets/images/icon.png'),
     });
-
     mainWindow.loadURL('file://' + __dirname + '/index.html');
     // mainWindow.webContents.openDevTools();
+    mainWindow.on('closed', function() {
+        mainWindow = null;
+    });
+
+    settingsWindow = new BrowserWindow({
+        width: 600,
+        height: 480,
+        frame: false,
+        resizable: false,
+        transparent: true,
+        icon: path.join(__dirname, './assets/images/icon.png'),
+    });
+    settingsWindow.loadURL('file://' + __dirname + '/settings.html');
+    settingsWindow.hide();
+    // settingsWindow.webContents.openDevTools();
+    settingsWindow.on('closed', function() {
+        settingsWindow = null;
+    });
+
+    global.settingsWindow = settingsWindow;
 
     if (process.platform == "darwin") {
         Menu.setApplicationMenu(menu);
     };
 
-    mainWindow.on('closed', function() {
-        mainWindow = null;
-    });
 });

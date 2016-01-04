@@ -27,7 +27,7 @@ const focusCurrentWindow = () => {
 }
 
 let appIcon;
-let settingsWindow;
+let settingsWindow = remote.getGlobal('settingsWindow');
 
 event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
     if (!appIcon) {
@@ -45,9 +45,6 @@ event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
         ...__menus,
         { type: 'separator' },
         { label: 'Exit', click: () => {
-            if (settingsWindow) {
-                settingsWindow.close();
-            }
             app.quit();
         } }
     ];
@@ -69,25 +66,8 @@ event.on(EVENT.MAXIMIZE_WINDOW, () => {
 });
 
 event.on(EVENT.OPEN_SETTINGS_WINDOW, () => {
-    if (!settingsWindow) {
-        settingsWindow = new BrowserWindow({
-            width: 600,
-            height: 480,
-            frame: false,
-            resizable: false,
-            transparent: true,
-            icon: path.join(global.__dirname, './assets/images/icon.png'),
-        });
-        settingsWindow.loadURL('file://' + global.__dirname + '/settings.html');
-        // settingsWindow.webContents.openDevTools();
-        try {
-            settingsWindow.on('closed', function() {
-                settingsWindow = null;
-            });
-        } catch (e) {
-            log(e);
-        }
-    } else {
+    if (settingsWindow) {
+        settingsWindow.show();
         settingsWindow.focus();
     }
 });
