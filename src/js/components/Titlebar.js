@@ -35,7 +35,7 @@ class Titlebar extends Component {
 
     render() {
         const { isMaximized } = this.state;
-        const { disableHide, disableMaximize } = this.props;
+        const { closeAsHide, disableMaximize } = this.props;
         let maximizeButton = null;
         if (!disableMaximize) {
             maximizeButton = isMaximized ?
@@ -49,9 +49,9 @@ class Titlebar extends Component {
                     <div className="window-controls">
                         <i className="iconfont minimize" onClick={ event.emit.bind(null, EVENT.MINIMIZE_WINDOW) }>&#xe607;</i>
                         { maximizeButton }
-                        { disableHide ?
-                            <i className="iconfont close"    onClick={ event.emit.bind(null, EVENT.CLOSE_WINDOW) }>&#xe602;</i> :
-                            <i className="iconfont close"    onClick={ event.emit.bind(null, EVENT.HIDE_WINDOW) }>&#xe602;</i> }
+                        { closeAsHide ?
+                            <i className="iconfont close" onClick={ event.emit.bind(null, EVENT.HIDE_WINDOW) }>&#xe602;</i> :
+                            <i className="iconfont close" onClick={ event.emit.bind(null, EVENT.CLOSE_WINDOW) }>&#xe602;</i> }
                     </div>
                 </div>);
     }
@@ -59,7 +59,7 @@ class Titlebar extends Component {
 
 Titlebar.propTypes = {
     title: PropTypes.string,
-    disableHide: PropTypes.bool,
+    closeAsHide: PropTypes.bool,
     disableMaximize: PropTypes.bool,
 };
 

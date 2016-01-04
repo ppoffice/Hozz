@@ -10,7 +10,7 @@ import log from '../backend/log';
 import event from '../backend/event';
 import update from '../backend/update';
 import Manifest from '../backend/manifest';
-import { app, dialog } from '../backend/nw.interface';
+import { app, dialog, ipcRenderer } from '../backend/nw.interface';
 import { EVENT,
          APP_NAME,
          USER_HOME,
@@ -22,6 +22,7 @@ import { EVENT,
 
 import Titlebar from './Titlebar';
 
+const terminate = remote.getGlobal('terminate');
 const updateStatus = remote.getGlobal('updateStatus');
 
 class Settings extends Component {
@@ -29,10 +30,14 @@ class Settings extends Component {
         super(props);
         this.state = {
             activeIndex: 0,
-            isCheckingUpdate: updateStatus() === 'checking' ? true : false,
-            isDownloadUpdate: updateStatus() === 'downloading' ? true : false,
-            isApplyingUpdate: updateStatus() === 'applying' ? true : false,
+            updateStatus: updateStatus.get(),
         };
+    }
+
+    componentDidMount () {
+        ipcRenderer.on('UPDATE_STATUS', (eventEmitter, value) => {
+            this.setState({ updateStatus: value });
+        });
     }
 
     __onLinkClick (index) {
@@ -75,7 +80,7 @@ class Settings extends Component {
                     message: 'Import Complete',
                     detail: 'Please restart ' + APP_NAME + ' for this change to take effect.',
                 });
-                app.quit();
+                terminate();
             }).catch((e) => {
                 dialog.showErrorBox('Import Error', 'Did you open a valid file?');
                 log(e);
@@ -137,32 +142,7 @@ class Settings extends Component {
     }
 
     __onCheckUpdateClick () {
-        const { isCheckingUpdate, isDownloadUpdate, isApplyingUpdate } = this.state;
-        if (!isCheckingUpdate && !isDownloadUpdate && !isApplyingUpdate) {
-            this.setState({
-                isCheckingUpdate: true,
-                isDownloadUpdate: false,
-                isApplyingUpdate: false,
-            });
-            update.checkUpdate().then((release) => {
-                this.setState({
-                    isCheckingUpdate: false,
-                    isDownloadUpdate: true,
-                    isApplyingUpdate: false,
-                });
-                return update.downloadUpdate(release);
-            }).then((zip) => {
-                this.setState({
-                    isDownloadUpdate: false,
-                    isApplyingUpdate: true,
-                });
-                return update.applyUpdate(zip);
-            }).then(() => {
-                this.setState({
-                    isApplyingUpdate: false,
-                });
-            });
-        }
+        update(true);
     }
 
     __onHomepageClick () {
@@ -170,7 +150,7 @@ class Settings extends Component {
     }
 
     render() {
-        const { activeIndex, isCheckingUpdate, isDownloadUpdate, isApplyingUpdate } = this.state;
+        const { activeIndex, updateStatus } = this.state;
         const items = [
             { name: 'import',   label: 'Import' },
             { name: 'export',   label: 'Export' },
@@ -183,11 +163,11 @@ class Settings extends Component {
                         onClick={ this.__onLinkClick.bind(this, index) }><a href={ '#' + item.name }>{ item.label }</a></li>);
         });
         let updateText;
-        if (isCheckingUpdate) {
+        if (updateStatus === 'checking') {
             updateText = 'Checking Update';
-        } else if (isDownloadUpdate) {
+        } else if (updateStatus === 'downloading') {
             updateText = 'Downloading Update';
-        } else if (isApplyingUpdate) {
+        } else if (updateStatus === 'applying') {
             updateText = 'Applying Update';
         } else {
             updateText = 'Check Update';
@@ -195,7 +175,7 @@ class Settings extends Component {
         return (<div className="settings-container">
                     <Titlebar
                         title="Settings"
-                        disableHide={ true }
+                        closeAsHide={ true }
                         disableMaximize={ true } />
                     <div className="settings">
                         <ul className="links">
@@ -230,7 +210,7 @@ class Settings extends Component {
                                     Homepage
                                 </button>
                                 <button
-                                    disabled={ isCheckingUpdate || isDownloadUpdate || isApplyingUpdate }
+                                    disabled={ !!updateStatus }
                                     onClick={ this.__onCheckUpdateClick.bind(this) }>
                                     { updateText }
                                 </button>

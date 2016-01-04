@@ -13,7 +13,9 @@ const menuTemplate = [
             {
                 label: 'Exit',
                 accelerator: 'Cmd+Q',
-                selector: 'terminate:'
+                click: function () {
+                    global.terminate();
+                }
             }
         ]
     },
@@ -62,32 +64,36 @@ const menu = Menu.buildFromTemplate(menuTemplate);
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 let settingsWindow;
+let shouldQuit = false;
 
-const updateStatus = (function () {
-    let __updateStatus = '';
-    return function (value) {
-        if (typeof(value) !== 'undefined') {
-            __updateStatus = value;
+global.updateStatus = (function () {
+    let status = '';
+    return {
+        get () {
+            return status;
+        },
+
+        set (value) {
+            status = value;
+            if (settingsWindow) {
+                settingsWindow.webContents.send('UPDATE_STATUS', value);
+            }
         }
-        return __updateStatus;
     };
 })();
 
-// Export global to store status
-global.updateStatus = updateStatus;
+global.terminate = function () {
+    shouldQuit = true;
+    app.quit();
+};
 
 if (process.platform === 'linux') {
     app.commandLine.appendSwitch('enable-transparent-visuals');
     app.commandLine.appendSwitch('disable-gpu');
 }
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-    app.quit();
-});
-
 // Someone tried to run a second instance, we should focus our window
-var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+var shouldStartInstance = app.makeSingleInstance(function(commandLine, workingDirectory) {
     if (mainWindow) {
         if (!mainWindow.isVisible()) {
             mainWindow.show();
@@ -100,7 +106,7 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
     return true;
 });
 
-if (shouldQuit) {
+if (shouldStartInstance) {
     app.quit();
     return;
 }
@@ -115,6 +121,12 @@ app.on('ready', function () {
     });
     mainWindow.loadURL('file://' + __dirname + '/index.html');
     // mainWindow.webContents.openDevTools();
+    mainWindow.on('close', function(e) {
+        if (!shouldQuit) {
+            e.preventDefault();
+            mainWindow.hide();
+        }
+    });
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
@@ -130,6 +142,12 @@ app.on('ready', function () {
     settingsWindow.loadURL('file://' + __dirname + '/settings.html');
     settingsWindow.hide();
     // settingsWindow.webContents.openDevTools();
+    settingsWindow.on('close', function(e) {
+        if (!shouldQuit) {
+            e.preventDefault();
+            settingsWindow.hide();
+        }
+    });
     settingsWindow.on('closed', function() {
         settingsWindow = null;
     });

@@ -13,6 +13,7 @@ import { APP_NAME,
          APP_HOMEPAGE,
          APP_RELEASES_URL } from '../constants';
 
+const terminate = remote.getGlobal('terminate');
 const updateStatus = remote.getGlobal('updateStatus');
 
 const isNewVersion = (v1, v2) => {
@@ -33,22 +34,22 @@ const isNewVersion = (v1, v2) => {
     return false;
 }
 
-const checkUpdate = (isBackend = false) => {
-    updateStatus('checking');
+const checkUpdate = (showNoUpdateFoundDialog = true) => {
+    updateStatus.set('checking');
     return io.requestUrl(APP_RELEASES_URL).then((json) => {
-        updateStatus('');
-        const releases = JSON.parse(json).sort((A, B) => {
-            return B.id - A.id;
-        });
+        const releases = JSON.parse(json).sort((A, B) => B.id - A.id);
         const latestRelease = releases[0];
+        if (!latestRelease || !latestRelease.tag_name) {
+            return Promise.reject(new Error('Cannot find valid latest release'));
+        }
         const latestVersion = latestRelease.tag_name[0] === 'v' ?
                               latestRelease.tag_name.slice(1) :
                               latestRelease.tag_name;
         if (isNewVersion(APP_VERSION, latestVersion)) {
             const confirm = dialog.showMessageBox({
-                buttons: ['OK', 'Cancel'],
                 type: 'info',
                 title: 'Check Update',
+                buttons: ['OK', 'Cancel'],
                 message: 'Found New Version: ' + latestVersion,
                 detail: `${ latestRelease.body || '' }\n\nDo you want to update to the latest version?`,
             });
@@ -56,28 +57,28 @@ const checkUpdate = (isBackend = false) => {
                 return Promise.resolve(latestRelease);
             }
         } else {
-            !isBackend && dialog.showMessageBox({
-                buttons: ['OK'],
+            showNoUpdateFoundDialog && dialog.showMessageBox({
                 type: 'info',
+                buttons: ['OK'],
                 title: 'Check Update',
                 message: 'No Update Found',
                 detail: 'You are using the latest version.',
             });
         }
-        return Promise.resolve();
+        return Promise.resolve(null);
     }).catch((e) => {
-        updateStatus('');
         log(e);
-        !isBackend && dialog.showErrorBox('Update Error', `Check update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
-        return Promise.resolve();
+        if (showNoUpdateFoundDialog) {
+            dialog.showErrorBox('Update Error', `Check update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
+        }
+        return Promise.resolve(null);
     });
 }
 
 const downloadUpdate = (release) => {
     let corePackage = null;
     if (!release) {
-        updateStatus('');
-        return Promise.resolve();
+        return Promise.resolve(null);
     }
     try {
         const assets = release ? release.assets : [];
@@ -89,35 +90,32 @@ const downloadUpdate = (release) => {
         }
     } catch (e) {}
     if (corePackage) {
-        updateStatus('downloading');
+        updateStatus.set('downloading');
         return io.downloadUrl(corePackage.browser_download_url).then((buffer) => {
-            updateStatus('');
             const zip = new JSZip(buffer);
             if (!zip || !zip.files) {
                 return Promise.reject(new Error('Invalid update zip file!'));
             }
             return Promise.resolve(zip);
         }).catch((e) => {
-            updateStatus('');
             log(e);
             dialog.showErrorBox('Update Error', `Download update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
             return Promise.resolve(null);
         });
     } else {
-        updateStatus('');
-        dialog.showErrorBox('Update Error', `Download update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
+        updateStatus.set('');
+        dialog.showErrorBox('Update Error', `Cannot find core package. Please go to ${ APP_HOMEPAGE } to download latest release.`);
         return Promise.resolve(null);
     }
 }
 
 const applyUpdate = (zip) => {
-    updateStatus('applying');
     if (!zip) {
-        updateStatus('');
-        return Promise.resolve();
+        return Promise.resolve(false);
     }
-    const { files } = zip;
+    updateStatus.set('applying');
     const promises = [];
+    const { files } = zip;
     for (let filename in files) {
         if (files.hasOwnProperty(filename)) {
             const file = files[filename];
@@ -135,36 +133,27 @@ const applyUpdate = (zip) => {
             type: 'info',
             title: 'Success',
             message: 'Update Complete',
-            detail: 'Please restart ' + APP_NAME + ' for this update to take effect.',
+            detail: `Please restart ${APP_NAME} for this update to take effect.`,
         });
-        app.quit();
+        return Promise.resolve(true);
     }).catch((e) => {
-        updateStatus('');
         log(e);
         dialog.showErrorBox('Update Error', `Apply update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
-        return Promise.resolve(null);
+        return Promise.resolve(false);
     });
 }
 
-const backendUpdate = () => {
-    if (!updateStatus()) {
-        checkUpdate(true).then((release) => {
-            if (release) {
-                return downloadUpdate(release);
-            }
-            return Promise.resolve();
-        }).then((zip) => {
-            if (zip) {
-                return applyUpdate(zip);
-            }
-            return Promise.resolve();
-        });
+export default function (interactive = true) {
+    if (updateStatus.get()) {
+        return;
     }
-}
-
-export default {
-    checkUpdate,
-    applyUpdate,
-    backendUpdate,
-    downloadUpdate,
+    checkUpdate(interactive)
+        .then(downloadUpdate)
+        .then(applyUpdate)
+        .then((result) => {
+            updateStatus.set('')
+            if (result) {
+                terminate();
+            }
+        });
 };

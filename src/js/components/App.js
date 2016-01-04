@@ -268,7 +268,9 @@ class App extends Component {
                         </div>
                     </Dropzone>
                     <div className="main-container">
-                        <Titlebar title={ activeHosts ? activeHosts.name : APP_NAME } />
+                        <Titlebar
+                            closeAsHide={ true }
+                            title={ activeHosts ? activeHosts.name : APP_NAME } />
                         { snack !== null ?
                             <SnackBar
                                 type={ snack.type }

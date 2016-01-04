@@ -3,14 +3,18 @@ const electron = global.require('electron');
 const remote = electron.remote;
 const Menu = remote.Menu;
 const Tray = remote.Tray;
-const BrowserWindow = remote.BrowserWindow;
+
 export const app = remote.app;
 export const shell = remote.shell;
 export const dialog = remote.dialog;
+export const ipcRenderer = electron.ipcRenderer;
 
 import log from './log';
 import event from './event';
 import { APP_NAME, EVENT } from '../constants';
+
+const terminate = remote.getGlobal('terminate');
+const settingsWindow = remote.getGlobal('settingsWindow');
 
 const window = () => {
     return remote.getCurrentWindow();
@@ -27,7 +31,6 @@ const focusCurrentWindow = () => {
 }
 
 let appIcon;
-let settingsWindow = remote.getGlobal('settingsWindow');
 
 event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
     if (!appIcon) {
@@ -45,7 +48,7 @@ event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
         ...__menus,
         { type: 'separator' },
         { label: 'Exit', click: () => {
-            app.quit();
+            terminate();
         } }
     ];
     const contextMenu = Menu.buildFromTemplate(menus);

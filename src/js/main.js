@@ -11,4 +11,4 @@ titleDOM.innerText = APP_NAME;
 
 ReactDOM.render(<App />, document.getElementById('app'));
 
-update.backendUpdate();
+update(false);
