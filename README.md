@@ -12,7 +12,6 @@
 * Export hosts file to [Surge](https://surge.run/manual/) config file
 
 ## Known Issues
-* Experience an error dialog when exiting on some occasions
 * Wrong window height/width when maximized on Windows
 * Window get ghost shadows sometimes on OS X
 * Get black background on startup on Linux due to the due to graphics issues ([Electron#2170](https://github.com/atom/electron/issues/2170)), and this will soon disappear
