@@ -1,6 +1,7 @@
 export default {
     common: {
         'ok': '确定',
+        'exit': '退出',
         'cancel': '取消',
         'success': '成功',
         'warning': '警告',

@@ -34,7 +34,7 @@ const codemirrorOptions = {
 class Editor extends Component {
     constructor(props) {
         super(props);
-        this.codemirrorOptions = {};
+        this.codemirrorOptions = codemirrorOptions;
         this.state = {
             value: props.value
         };

@@ -1,6 +1,7 @@
 export default {
     common: {
         'ok': 'OK',
+        'exit': 'Exit',
         'cancel': 'Cancel',
         'success': 'Success',
         'warning': 'Warning',

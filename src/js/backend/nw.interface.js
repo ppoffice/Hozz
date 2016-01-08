@@ -11,6 +11,7 @@ export const ipcRenderer = electron.ipcRenderer;
 
 import log from './log';
 import event from './event';
+import Lang from './language';
 import { APP_NAME, EVENT } from '../constants';
 
 const terminate = remote.getGlobal('terminate');
@@ -47,7 +48,7 @@ event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
         { type: 'separator' },
         ...__menus,
         { type: 'separator' },
-        { label: 'Exit', click: () => {
+        { label: Lang.get('common.exit'), click: () => {
             terminate();
         } }
     ];
