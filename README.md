@@ -40,7 +40,7 @@ npm install
 * **gulp package-x32**: Pack ia32 files on x64 systems, this doesn't apply to **OS X**
 
 ## Todos
-- [ ] Multilanguage support
+- [x] Multilanguage support
 - [ ] Manifest and hosts sync based on cloud services
 - [ ] Enhance stability
 - [ ] Better text searching and editing experience

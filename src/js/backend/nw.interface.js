@@ -1,6 +1,6 @@
 const path = require('path');
 const electron = global.require('electron');
-const remote = electron.remote;
+export const remote = electron.remote;
 const Menu = remote.Menu;
 const Tray = remote.Tray;
 

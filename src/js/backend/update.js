@@ -1,5 +1,3 @@
-const remote = global.require('remote');
-
 const path = require('path');
 const mkdirp = require('mkdirp');
 
@@ -8,7 +6,7 @@ import JSZip from 'jszip';
 import io from '../backend/io';
 import log from '../backend/log';
 import Lang from '../backend/language';
-import { app, dialog } from '../backend/nw.interface';
+import { remote, dialog } from '../backend/nw.interface';
 import { APP_NAME,
          APP_VERSION,
          APP_HOMEPAGE,

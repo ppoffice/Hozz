@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Dropzone from 'react-dropzone';
 import dragula from 'react-dragula';
 
@@ -13,7 +13,6 @@ import event from '../backend/event';
 import Hosts from '../backend/hosts';
 import Lang from '../backend/language';
 import nw from '../backend/nw.interface';
-import Manifest from '../backend/manifest';
 import permission from '../backend/permission';
 
 import Editor from './Editor';
@@ -40,17 +39,17 @@ class App extends Component {
     }
 
     componentDidMount () {
-        Manifest.loadFromDisk().then((manifest) => {
-            const updateRemoteHosts = manifest.getHostsList().map((hosts) => {
-                return hosts.updateFromUrl().then(() => {
-                    this.__updateManifest(manifest);
-                });
-            });
-            this.__updateManifest(manifest);
-            Promise.all(updateRemoteHosts).then(() => {
-                event.emit(EVENT.INITIAL_CLOUD_HOSTS_UPDATED);
+        const { manifest } = this.props;
+        const updateRemoteHosts = manifest.getHostsList().map((hosts) => {
+            return hosts.updateFromUrl().then(() => {
+                this.__updateManifest(manifest);
             });
         });
+        this.__updateManifest(manifest);
+        Promise.all(updateRemoteHosts).then(() => {
+            event.emit(EVENT.INITIAL_CLOUD_HOSTS_UPDATED);
+        });
+
         const drake = dragula([document.querySelector('.sidebar-list-dragable')]);
         drake.on('drag', (element) => {
             this.dragStartPosition = getPosition(element);
@@ -288,6 +287,10 @@ class App extends Component {
                     </div>
                 </div>);
     }
-}
+};
+
+App.propTypes = {
+    manifest: PropTypes.object,
+};
 
 export default App;

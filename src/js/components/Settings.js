@@ -1,8 +1,6 @@
-const remote = global.require('remote');
-
 const path = require('path');
 
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import JSZip from 'jszip';
 import Select from 'react-select';
 
@@ -12,7 +10,7 @@ import event from '../backend/event';
 import Lang from '../backend/language';
 import update from '../backend/update';
 import Manifest from '../backend/manifest';
-import { app, dialog, ipcRenderer } from '../backend/nw.interface';
+import { remote, dialog, ipcRenderer } from '../backend/nw.interface';
 import { EVENT,
          APP_NAME,
          USER_HOME,
@@ -96,13 +94,12 @@ class Settings extends Component {
 
     __onExportZipClick () {
         const zip = new JSZip();
-        Manifest.loadFromDisk().then((manifest) => {
-            zip.file('manifest.json', JSON.stringify(manifest.toSimpleObject()));
-            manifest.getHostsList().forEach((hosts) => {
-                zip.file(hosts.uid, hosts.text);
-            });
-            return Promise.resolve(zip.generate({ type: 'nodebuffer' }));
-        }).then((buffer) => {
+        const { manifest } = this.props;
+        zip.file('manifest.json', JSON.stringify(manifest.toSimpleObject()));
+        manifest.getHostsList().forEach((hosts) => {
+            zip.file(hosts.uid, hosts.text);
+        });
+        Promise.resolve(zip.generate({ type: 'nodebuffer' })).then((buffer) => {
             const savePath = dialog.showSaveDialog({
                 defaultPath: path.join(USER_HOME, APP_NAME + '-export.zip'),
                 filters: [
@@ -118,43 +115,39 @@ class Settings extends Component {
     }
 
     __onExportSurgeClick () {
-        Manifest.loadFromDisk().then((manifest) => {
-            let ret;
-            let text = '';
-            const hosts = manifest.getMergedHosts();
-            while ((ret = HOSTS_COUNT_MATHER.exec(hosts.text)) !== null) {
-                if (ret.index === HOSTS_COUNT_MATHER.lastIndex) {
-                    HOSTS_COUNT_MATHER.lastIndex++;
-                }
-                if (ret[2].indexOf('localhost') > -1 ||
-                    ret[2].indexOf('broadcasthost') > -1) {
-                    continue;
-                }
-                text += `${ ret[2] } = ${ ret[1] }\n`;
+        const { manifest } = this.props;
+        let ret;
+        let text = '';
+        const hosts = manifest.getMergedHosts();
+        while ((ret = HOSTS_COUNT_MATHER.exec(hosts.text)) !== null) {
+            if (ret.index === HOSTS_COUNT_MATHER.lastIndex) {
+                HOSTS_COUNT_MATHER.lastIndex++;
             }
-            text = SURGE_HOSTS_HEADER + text;
-            const savePath = dialog.showSaveDialog({
-                defaultPath: path.join(USER_HOME, APP_NAME + '-surge.txt'),
-                filters: [
-                    { name: Lang.get('common.text'), extensions: ['txt'] },
-                ]
-            });
-            if (savePath) {
-                return io.writeFile(savePath, text);
-            } else {
-                return Promise.resolve();
+            if (ret[2].indexOf('localhost') > -1 ||
+                ret[2].indexOf('broadcasthost') > -1) {
+                continue;
             }
-        }).catch(log);
+            text += `${ ret[2] } = ${ ret[1] }\n`;
+        }
+        text = SURGE_HOSTS_HEADER + text;
+        const savePath = dialog.showSaveDialog({
+            defaultPath: path.join(USER_HOME, APP_NAME + '-surge.txt'),
+            filters: [
+                { name: Lang.get('common.text'), extensions: ['txt'] },
+            ]
+        });
+        if (savePath) {
+            io.writeFile(savePath, text);
+        }
     }
 
     __onLanguageChange (lang) {
+        const { manifest } = this.props;
         const currentLocale = Lang.getCurrentLocale();
         this.setState({ locale: lang });
         if (lang.value !== currentLocale.value) {
-            Manifest.loadFromDisk().then((manifest) => {
-                manifest.language = lang.value;
-                return manifest.commit();
-            }).then(() => {
+            manifest.language = lang.value;
+            manifest.commit().then(() => {
                 dialog.showMessageBox({
                     buttons: ['OK'],
                     type: 'info',
@@ -251,5 +244,9 @@ class Settings extends Component {
                 </div>);
     }
 }
+
+Settings.propTypes = {
+    manifest: PropTypes.object,
+};
 
 export default Settings;

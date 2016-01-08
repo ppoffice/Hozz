@@ -13,5 +13,5 @@ Manifest.loadFromDisk().then((manifest) => {
     if (manifest.language) {
         Lang.setLocale(manifest.language);
     }
-    ReactDOM.render(<Settings />, document.getElementById('app'));
+    ReactDOM.render(<Settings manifest={ manifest } />, document.getElementById('app'));
 });

@@ -140,8 +140,8 @@ app.on('ready', function () {
         icon: path.join(__dirname, './assets/images/icon.png'),
     });
     settingsWindow.loadURL('file://' + __dirname + '/settings.html');
-    // settingsWindow.hide();
-    settingsWindow.webContents.openDevTools();
+    settingsWindow.hide();
+    // settingsWindow.webContents.openDevTools();
     settingsWindow.on('close', function(e) {
         if (!shouldQuit) {
             e.preventDefault();
