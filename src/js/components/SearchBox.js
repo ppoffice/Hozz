@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import Lang from '../backend/language';
+
 class SearchBox extends Component {
     constructor(props) {
         super(props);
@@ -31,9 +33,9 @@ class SearchBox extends Component {
                     <i className="iconfont search">&#xe601;</i>
                     <input
                         type="text"
-                        placeholder="Search"
                         value={ text }
-                        onChange={ this.__onInputChange.bind(this) } />
+                        onChange={ this.__onInputChange.bind(this) }
+                        placeholder={ Lang.get('common.search') } />
                     { text ? <i className="iconfont clear"
                                 onClick={ this.__onClearClick.bind(this) }>&#xe608;</i> : null }
                 </div>);

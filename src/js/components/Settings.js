@@ -4,10 +4,12 @@ const path = require('path');
 
 import React, { Component } from 'react';
 import JSZip from 'jszip';
+import Select from 'react-select';
 
 import io from '../backend/io';
 import log from '../backend/log';
 import event from '../backend/event';
+import Lang from '../backend/language';
 import update from '../backend/update';
 import Manifest from '../backend/manifest';
 import { app, dialog, ipcRenderer } from '../backend/nw.interface';
@@ -30,6 +32,7 @@ class Settings extends Component {
         super(props);
         this.state = {
             activeIndex: 0,
+            locale: Lang.getCurrentLocale(),
             updateStatus: updateStatus.get(),
         };
     }
@@ -48,7 +51,7 @@ class Settings extends Component {
         const openPath = dialog.showOpenDialog({
             filters: [
                 { name: 'Zip', extensions: ['zip'] },
-                { name: 'All Files', extensions: ['*'] },
+                { name: Lang.get('common.all_files'), extensions: ['*'] },
             ]
         });
         if (!openPath || !openPath.length) {
@@ -57,9 +60,9 @@ class Settings extends Component {
         const confirm = dialog.showMessageBox({
             buttons: ['OK', 'Cancel'],
             type: 'warning',
-            title: 'Warning',
-            detail: 'Do you want to continue?',
-            message: 'Your current files will be overridden.',
+            title: Lang.get('common.warning'),
+            detail: Lang.get('settings.confirm_continue'),
+            message: Lang.get('settings.overridden_warning'),
         });
         if (confirm === 0) {
             io.readFile(openPath[0]).then((data) => {
@@ -76,13 +79,16 @@ class Settings extends Component {
                 dialog.showMessageBox({
                     buttons: ['OK'],
                     type: 'info',
-                    title: 'Success',
-                    message: 'Import Complete',
-                    detail: 'Please restart ' + APP_NAME + ' for this change to take effect.',
+                    title: Lang.get('common.success'),
+                    message: Lang.get('settings.import_complete'),
+                    detail: Lang.get('settings.please_restart_app', APP_NAME),
                 });
                 terminate();
             }).catch((e) => {
-                dialog.showErrorBox('Import Error', 'Did you open a valid file?');
+                dialog.showErrorBox(
+                    Lang.get('settings.import_error'),
+                    Lang.get('settings.confirm_a_valid_file')
+                );
                 log(e);
             });
         }
@@ -130,7 +136,7 @@ class Settings extends Component {
             const savePath = dialog.showSaveDialog({
                 defaultPath: path.join(USER_HOME, APP_NAME + '-surge.txt'),
                 filters: [
-                    { name: 'Text', extensions: ['txt'] },
+                    { name: Lang.get('common.text'), extensions: ['txt'] },
                 ]
             });
             if (savePath) {
@@ -139,6 +145,26 @@ class Settings extends Component {
                 return Promise.resolve();
             }
         }).catch(log);
+    }
+
+    __onLanguageChange (lang) {
+        const currentLocale = Lang.getCurrentLocale();
+        this.setState({ locale: lang });
+        if (lang.value !== currentLocale.value) {
+            Manifest.loadFromDisk().then((manifest) => {
+                manifest.language = lang.value;
+                return manifest.commit();
+            }).then(() => {
+                dialog.showMessageBox({
+                    buttons: ['OK'],
+                    type: 'info',
+                    title: Lang.get('common.success'),
+                    message: Lang.get('settings.language_changed'),
+                    detail: Lang.get('settings.please_restart_app', APP_NAME),
+                });
+                terminate();
+            });
+        }
     }
 
     __onCheckUpdateClick () {
@@ -150,12 +176,12 @@ class Settings extends Component {
     }
 
     render() {
-        const { activeIndex, updateStatus } = this.state;
+        const { activeIndex, updateStatus, locale } = this.state;
         const items = [
-            { name: 'import',   label: 'Import' },
-            { name: 'export',   label: 'Export' },
-            { name: 'language', label: 'Language' },
-            { name: 'update',   label: 'Update' },
+            { name: 'import',   label: Lang.get('settings.import') },
+            { name: 'export',   label: Lang.get('settings.export') },
+            { name: 'language', label: Lang.get('settings.language') },
+            { name: 'about',    label: Lang.get('settings.about') },
         ];
         const links = items.map((item, index) => {
             return (<li key={ index }
@@ -164,50 +190,55 @@ class Settings extends Component {
         });
         let updateText;
         if (updateStatus === 'checking') {
-            updateText = 'Checking Update';
+            updateText = Lang.get('settings.checking_update');
         } else if (updateStatus === 'downloading') {
-            updateText = 'Downloading Update';
+            updateText = Lang.get('settings.downloading_update');
         } else if (updateStatus === 'applying') {
-            updateText = 'Applying Update';
+            updateText = Lang.get('settings.applying_update');
         } else {
-            updateText = 'Check Update';
+            updateText = Lang.get('settings.check_update');
         }
         return (<div className="settings-container">
                     <Titlebar
-                        title="Settings"
                         closeAsHide={ true }
-                        disableMaximize={ true } />
+                        disableMaximize={ true }
+                        title={ Lang.get('common.settings') } />
                     <div className="settings">
                         <ul className="links">
                             { links }
                         </ul>
                         <div className="contents">
                             <section key="import" id="import">
-                                <span className="section-title">Import</span>
+                                <span className="section-title">{ Lang.get('settings.import') }</span>
                                 <button onClick={ this.__onImportZipClick.bind(this) }>
-                                    Import from Zip
+                                    { Lang.get('settings.import_from_zip') }
                                 </button>
                             </section>
                             <section key="export" id="export">
-                                <span className="section-title">Export</span>
+                                <span className="section-title">{ Lang.get('settings.export') }</span>
                                 <button onClick={ this.__onExportZipClick.bind(this) }>
-                                    Export to Zip
+                                    { Lang.get('settings.export_to_zip') }
                                 </button>
                                 <button onClick={ this.__onExportSurgeClick.bind(this) }>
-                                    Export to Surge
+                                    { Lang.get('settings.export_to_surge') }
                                 </button>
                             </section>
                             <section key="language" id="language">
-                                <span className="section-title">Language</span>
-                                <select>
-                                    <option>English</option>
-                                </select>
+                                <span className="section-title">{ Lang.get('settings.language') }</span>
+                                <Select
+                                    clearable={ false }
+                                    searchable={ false }
+                                    className="language-select"
+                                    name={ locale.label }
+                                    value={ locale.value }
+                                    options={ Lang.getLocales() }
+                                    onChange={ this.__onLanguageChange.bind(this) } />
                             </section>
-                            <section key="update" id="update">
-                                <span className="section-title">About</span>
-                                <span className="section-title">Current Version: { APP_VERSION }</span>
+                            <section key="about" id="about">
+                                <span className="section-title">{ Lang.get('settings.about') }</span>
+                                <span className="section-title">{ Lang.get('settings.current_version', APP_VERSION) }</span>
                                 <button onClick={ this.__onHomepageClick.bind(this) }>
-                                    Homepage
+                                    { Lang.get('settings.homepage') }
                                 </button>
                                 <button
                                     disabled={ !!updateStatus }

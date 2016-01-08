@@ -7,11 +7,11 @@ import { EVENT,
          TOTAL_HOSTS_UID,
          NO_PERM_ERROR_TAG,
          NO_PERM_ERROR_TAG_WIN32 } from '../constants';
-import codemirrorOptions from '../codemirror.config.js';
 
 import io from '../backend/io';
 import event from '../backend/event';
 import Hosts from '../backend/hosts';
+import Lang from '../backend/language';
 import nw from '../backend/nw.interface';
 import Manifest from '../backend/manifest';
 import permission from '../backend/permission';
@@ -197,10 +197,10 @@ class App extends Component {
         this.setState({
             snack: {
                 type: 'danger',
-                text: 'You don\'t have the permission to write to hosts file.',
+                text: Lang.get('main.dont_have_permission'),
                 actions: [
                     {
-                        name: 'Grant Permission',
+                        name: Lang.get('main.grant_permission'),
                         onClick: () => {
                             permission.enableFullAccess();
                             this.__onSnackDismiss();
@@ -240,11 +240,11 @@ class App extends Component {
         if (editingUid !== null) {
             editingHosts = manifest.getHostsByUid(editingUid);
         }
-        let cmOptions = codemirrorOptions;
+        let readOnly = false;
         if (activeHosts && (TOTAL_HOSTS_UID === activeHosts.uid || activeHosts.url)) {
-            cmOptions = Object.assign({}, cmOptions, { readOnly: true });
+            readOnly = true;
         } else {
-            cmOptions = Object.assign({}, cmOptions, { readOnly: false });
+            readOnly = false;
         }
         return (<div>
                     <Dropzone
@@ -282,7 +282,7 @@ class App extends Component {
                             <Editor
                                 uid={ activeUid }
                                 key={ activeUid }
-                                options={ cmOptions }
+                                readOnly={ readOnly }
                                 value={ activeHosts.text }
                                 onTextShouldUpdate={ this.__updateHosts.bind(this) } /> : null }
                     </div>

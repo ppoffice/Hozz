@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import Lang from '../backend/language';
+
 class HostsInfoDialog extends Component {
     constructor(props) {
         super(props);
@@ -27,20 +29,23 @@ class HostsInfoDialog extends Component {
         return (<div className="popover new-hosts-dialog">
                     <div className="popover-content">
                         <div className="dialog-title">
-                            <span>Create New Hosts</span>
+                            <span>{
+                                !name ?
+                                Lang.get('main.create_new_hosts') :
+                                Lang.get('main.edit_hosts') }</span>
                             <i className="iconfont close" onClick={ onDismiss }>&#xe602;</i>
                         </div>
                         <div className="vertical-inputs">
                             <input
                                 type="text"
-                                placeholder="Name"
                                 defaultValue={ name }
+                                placeholder={ Lang.get('common.name') }
                                 onChange={ this.__onNameChange.bind(this) } />
                             <input
                                 type="text"
                                 defaultValue={ url }
-                                placeholder="Remote Source Url (Optional)"
-                                onChange={ this.__onUrlChange.bind(this) } />
+                                onChange={ this.__onUrlChange.bind(this) }
+                                placeholder={ Lang.get('main.remote_source_url') } />
                         </div>
                     </div>
                     <div className="popover-arrow"></div>

@@ -26,7 +26,7 @@ const sysHostsPath = () => {
 
 class Manifest {
     constructor (options) {
-        const { online, hosts } = options;
+        const { online, language, hosts } = options;
         this.hosts = new Map();
         if (hosts instanceof Map) {
             this.hosts = hosts;
@@ -38,6 +38,7 @@ class Manifest {
             });
         }
         this.online = typeof(online) === 'undefined' ? true : online;
+        this.language = typeof(language) === 'undefined' ? navigator.language : language;
     }
 
     getHostsByUid (uid) {

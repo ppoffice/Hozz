@@ -7,6 +7,7 @@ import JSZip from 'jszip';
 
 import io from '../backend/io';
 import log from '../backend/log';
+import Lang from '../backend/language';
 import { app, dialog } from '../backend/nw.interface';
 import { APP_NAME,
          APP_VERSION,
@@ -48,10 +49,10 @@ const checkUpdate = (showNoUpdateFoundDialog = true) => {
         if (isNewVersion(APP_VERSION, latestVersion)) {
             const confirm = dialog.showMessageBox({
                 type: 'info',
-                title: 'Check Update',
-                buttons: ['OK', 'Cancel'],
-                message: 'Found New Version: ' + latestVersion,
-                detail: `${ latestRelease.body || '' }\n\nDo you want to update to the latest version?`,
+                title: Lang.get('common.update_available'),
+                buttons: [Lang.get('common.ok'), Lang.get('common.cancel')],
+                message: Lang.get('common.found_new_version', latestVersion),
+                detail: `${ latestRelease.body || '' }\n\n` + Lang.get('common.confirm_update'),
             });
             if (confirm === 0) {
                 return Promise.resolve(latestRelease);
@@ -59,17 +60,20 @@ const checkUpdate = (showNoUpdateFoundDialog = true) => {
         } else {
             showNoUpdateFoundDialog && dialog.showMessageBox({
                 type: 'info',
-                buttons: ['OK'],
-                title: 'Check Update',
-                message: 'No Update Found',
-                detail: 'You are using the latest version.',
+                buttons: [Lang.get('common.ok')],
+                title: Lang.get('common.success'),
+                message: Lang.get('common.no_update_found'),
+                detail: Lang.get('common.using_latest_release'),
             });
         }
         return Promise.resolve(null);
     }).catch((e) => {
         log(e);
         if (showNoUpdateFoundDialog) {
-            dialog.showErrorBox('Update Error', `Check update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
+            dialog.showErrorBox(
+                Lang.get('common.update_failed'),
+                Lang.get('common.check_update_failed') + ' ' + Lang.get('common.go_to_homepage', APP_HOMEPAGE)
+            );
         }
         return Promise.resolve(null);
     });
@@ -99,12 +103,18 @@ const downloadUpdate = (release) => {
             return Promise.resolve(zip);
         }).catch((e) => {
             log(e);
-            dialog.showErrorBox('Update Error', `Download update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
+            dialog.showErrorBox(
+                Lang.get('common.update_failed'),
+                Lang.get('common.download_update_failed') + ' ' + Lang.get('common.go_to_homepage', APP_HOMEPAGE)
+            );
             return Promise.resolve(null);
         });
     } else {
         updateStatus.set('');
-        dialog.showErrorBox('Update Error', `Cannot find core package. Please go to ${ APP_HOMEPAGE } to download latest release.`);
+        dialog.showErrorBox(
+            Lang.get('common.update_failed'),
+            Lang.get('common.cannot_find_core_package') + ' ' + Lang.get('common.go_to_homepage', APP_HOMEPAGE)
+        );
         return Promise.resolve(null);
     }
 }
@@ -131,14 +141,17 @@ const applyUpdate = (zip) => {
         dialog.showMessageBox({
             buttons: ['OK'],
             type: 'info',
-            title: 'Success',
-            message: 'Update Complete',
-            detail: `Please restart ${APP_NAME} for this update to take effect.`,
+            title: Lang.get('common.success'),
+            message: Lang.get('common.update_complete'),
+            detail: Lang.get('common.restart_to_update', APP_NAME),
         });
         return Promise.resolve(true);
     }).catch((e) => {
         log(e);
-        dialog.showErrorBox('Update Error', `Apply update failed. Please go to ${ APP_HOMEPAGE } to download latest release.`);
+        dialog.showErrorBox(
+            Lang.get('common.update_failed'),
+            Lang.get('common.apply_update_failed') + ' ' + Lang.get('common.go_to_homepage', APP_HOMEPAGE)
+        );
         return Promise.resolve(false);
     });
 }

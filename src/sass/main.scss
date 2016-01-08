@@ -1,6 +1,7 @@
 @import 'normalize';
 @import 'dragula';
 @import 'codemirror';
+@import 'react-select';
 
 $sidebar-width: 240px;
 $titlebar-height: 44px;
@@ -37,14 +38,16 @@ input[type="text"] {
     cursor: text;
 }
 
-button,
-select {
-    padding: 6px 10px;
+button {
+    padding: 8px 10px;
     border-radius: 3px;
     background-color: white;
     border: 1px solid $border-light;
     &:hover {
-        background-color: $background-light;
+        color: white;
+        background-color: $color-theme;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+        border: 1px solid darken($color-theme, 10%);
     }
 }
 
@@ -364,6 +367,28 @@ button {
                     margin-bottom: 10px;
                 }
             }
+        }
+    }
+    .language-select {
+        max-width: 200px;
+        * {
+            cursor: pointer;
+        }
+        .Select-control {
+            height: auto;
+        }
+        .Select-placeholder,
+        :not(.Select--multi)>.Select-control .Select-value {
+            padding: 8px 10px;
+            line-height: auto;
+        }
+        .Select-option.is-focused {
+            color: white;
+            background-color: $color-theme;
+        }
+        &.is-focused:not(.is-open)>.Select-control {
+            box-shadow: none;
+            border-color: darken($color-theme, 10%);
         }
     }
 }

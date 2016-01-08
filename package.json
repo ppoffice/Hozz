@@ -44,6 +44,7 @@
     "react-dom": "^0.14.3",
     "react-dragula": "^1.1.9",
     "react-dropzone": "^3.3.0",
+    "react-select": "^1.0.0-beta8",
     "uid": "0.0.2",
     "webpack": "^1.12.9"
   },
