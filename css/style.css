@@ -292,8 +292,10 @@
 		color: #FFF !important;
 	}
 
-	.alternative-download {
-		margin-top: 10px;
+	#featured .alternative-download {
+		font-size: 14px;
+		margin: 12px 0 0;
+		line-height: 1.2em;
 	}
 
 /*********************************************************************************/
