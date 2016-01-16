@@ -160,7 +160,8 @@ var buildPackage = function (platform, arch, callback) {
     }, function (err, appPath) {
         if (appPath) {
             var distPath = appPath[0];
-            callback(platform, arch, distPath);
+            console.log(distPath)
+            callback && callback(platform, arch, distPath);
         }
     });
 }
@@ -172,12 +173,22 @@ var afterPackage = function (platform, arch, distPath) {
 
 gulp.task('package', ['build'], function (callback) {
     gulp.src('./app/*.map').pipe(clean());
-    buildPackage(process.platform, process.arch, afterPackage);
+    if (process.arch !== 'ia32') {
+        buildPackage(process.platform, process.arch, afterPackage);
+    }
+    if (process.platform !== 'darwin') {
+        buildPackage(process.platform, 'ia32', afterPackage);
+    }
 });
 
-gulp.task('package-x32', ['build'], function (callback) {
+gulp.task('package-uncompressed', ['build'], function (callback) {
     gulp.src('./app/*.map').pipe(clean());
-    buildPackage(process.platform, 'ia32', afterPackage);
+    if (process.arch !== 'ia32') {
+        buildPackage(process.platform, process.arch);
+    }
+    if (process.platform !== 'darwin') {
+        buildPackage(process.platform, 'ia32');
+    }
 });
 
 gulp.task('watch', ['build'], function () {
