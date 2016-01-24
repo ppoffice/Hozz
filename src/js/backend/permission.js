@@ -5,11 +5,12 @@ import { APP_NAME } from '../constants';
 
 const SUDO_OPTION = {
     name: APP_NAME,
-    icns: path.join(__dirname, './assets/images/icon.icns'),
+    icns: path.join(global.__dirname, './assets/images/icon.icns'),
     process: {
         options: {
             env: { 'LANG': 'en_US.UTF-8' }
-        }
+        },
+        on: () => {}
     }
 };
 
@@ -32,7 +33,7 @@ const enableFullAccess = () => {
             break;
         case 'darwin':
         case 'linux':
-            command = 'chmod 666 /etc/hosts';
+            command = '/bin/chmod 644 /etc/hosts';
             break;
         default:
             command = '';
