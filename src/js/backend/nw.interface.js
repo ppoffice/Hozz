@@ -8,6 +8,7 @@ export const app = remote.app;
 export const shell = remote.shell;
 export const dialog = remote.dialog;
 export const ipcRenderer = electron.ipcRenderer;
+export const BrowserWindow = remote.BrowserWindow;
 
 import log from './log';
 import event from './event';
@@ -21,14 +22,28 @@ const window = () => {
     return remote.getCurrentWindow();
 }
 
+const focusWindow = (browserWindow) => {
+    if (!browserWindow.isVisible()) {
+        browserWindow.show();
+    }
+    if (browserWindow.isMinimized()) {
+        browserWindow.restore();
+    }
+    browserWindow.focus();
+    setDockIconVisibility();
+}
+
 const focusCurrentWindow = () => {
-    if (!window().isVisible()) {
-        window().show();
+    focusWindow(window());
+}
+
+const setDockIconVisibility = () => {
+    const windows = BrowserWindow.getAllWindows();
+    if (windows.some(win => win.isVisible())) {
+        app.dock.show();
+    } else {
+        app.dock.hide();
     }
-    if (window().isMinimized()) {
-        window().restore();
-    }
-    window().focus();
 }
 
 let appIcon;
@@ -61,6 +76,7 @@ event.on(EVENT.CLOSE_WINDOW, () => {
 });
 event.on(EVENT.HIDE_WINDOW, () => {
     window().hide();
+    setDockIconVisibility();
 });
 event.on(EVENT.MINIMIZE_WINDOW, () => {
     window().minimize();
@@ -71,8 +87,7 @@ event.on(EVENT.MAXIMIZE_WINDOW, () => {
 
 event.on(EVENT.OPEN_SETTINGS_WINDOW, () => {
     if (settingsWindow) {
-        settingsWindow.show();
-        settingsWindow.focus();
+        focusWindow(settingsWindow);
     }
 });
 
