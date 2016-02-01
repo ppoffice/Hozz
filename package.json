@@ -1,6 +1,6 @@
 {
   "name": "Hozz",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A better way to manage your hosts.",
   "main": "browser.js",
   "scripts": {
