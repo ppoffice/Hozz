@@ -32,8 +32,10 @@ const enableFullAccess = () => {
             command = path.join(global.__dirname, './assets/scripts/win32.bat');
             break;
         case 'darwin':
+            command = '/usr/sbin/chown `/usr/bin/whoami` /etc/hosts && /bin/chmod 644 /etc/hosts';
+            break;
         case 'linux':
-            command = '/bin/chmod 644 /etc/hosts';
+            command = '/bin/chown `/usr/bin/whoami` /etc/hosts && /bin/chmod 644 /etc/hosts';
             break;
         default:
             command = '';
