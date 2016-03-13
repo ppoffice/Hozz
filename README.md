@@ -37,8 +37,8 @@ npm install
 * **gulp**: Compile, build and copy files to /app
 * **gulp clean**: Delete the built files, including /app and /build
 * **gulp watch**: Watch the /src directory and automatically build on file change
-* **gulp package**: Pack with Electron for releasing, need to run **gulp clean** before this
-* **gulp package-x32**: Pack ia32 files on x64 systems, this doesn't apply to **OS X**
+* **gulp package**: Pack with Electron for releasing(ia32 and x64), need to run **gulp clean** before this
+* **gulp package-uncompressed**: Same as the former one but with no file deleted or compressed. This is for some legacy system like Windows 7
 
 ## Todos
 - [x] Multilanguage support

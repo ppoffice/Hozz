@@ -1,7 +1,26 @@
 import enUS from '../lang/en-US.js';
 import zhCN from '../lang/zh-CN.js';
 
-let locale = navigator.language || 'en-US';
+const getNavigatorLanguage = () => {
+    let languages = navigator.languages;
+    for (let i = 0; i < languages.length; i++) {
+        let locale = getUnifiedLocale(languages[i]);
+        if (locale) {
+            return locale;
+        }
+    }
+}
+
+const getUnifiedLocale = (locale) => {
+    for (let key in lang) {
+        if (key.includes(locale))
+        {
+            return key;
+        }
+    }
+}
+
+let locale = getNavigatorLanguage() || 'en-US';
 let lang = {
     'en-US': { name: 'English(US)', content: enUS },
     'zh-CN': { name: '简体中文',    content: zhCN },
@@ -9,7 +28,7 @@ let lang = {
 
 export default {
     setLocale (__locale) {
-        locale = __locale || 'en-US';
+        locale = getUnifiedLocale(__locale) || 'en-US';
     },
 
     getCurrentLocale () {
