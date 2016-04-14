@@ -6,7 +6,6 @@ module.exports = {
     devtool: 'source-map',
     entry: {
         main: './src/js/main',
-        settings: './src/js/settings',
     },
     output: {
         path: path.join(__dirname, 'app'),
@@ -27,7 +26,7 @@ module.exports = {
 
                 // Options to configure babel with
                 query: {
-                    presets: ['es2015', 'react'],
+                    presets: ['es2015', 'react', 'stage-1'],
                 }
             },
             {
