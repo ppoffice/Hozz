@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import Editor from '../partial/Editor';
+import MainContent from '../partial/MainContent';
 import FileSidebar, { FileSidebarItem, FileSidebarGroup } from '../partial/FileSidebar';
 
 class Files extends Component {
@@ -21,6 +23,9 @@ class Files extends Component {
                             <FileSidebarItem id="file4"  name="file4" />
                         </FileSidebarGroup>
                     </FileSidebar>
+                    <MainContent>
+                        <Editor></Editor>
+                    </MainContent>
                 </div>);
     }
 }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import FragmentController from './partial/base/FragmentController';
 import PrimarySidebar, { PrimarySidebarItem } from './partial/PrimarySidebar';
-import PageController from './page/PageController';
 import Files from './page/Files';
 import Search from './page/Search';
 import Settings from './page/Settings';
@@ -26,11 +26,11 @@ class App extends Component {
                         <PrimarySidebarItem id={ Search.displayName } name="Search" icon="search" />
                         <PrimarySidebarItem id={ Settings.displayName } name="Settings" icon="settings" />
                     </PrimarySidebar>
-                    <PageController current={ currentPage }>
+                    <FragmentController current={ currentPage }>
                         <Files />
                         <Search />
                         <Settings />
-                    </PageController>
+                    </FragmentController>
                 </div>);
     }
 }

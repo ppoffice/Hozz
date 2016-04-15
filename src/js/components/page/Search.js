@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import SearchBox from '../partial/SearchBox';
+
 class Search extends Component {
     static displayName = "Search";
 
@@ -8,7 +10,9 @@ class Search extends Component {
     }
 
     render () {
-        return (<div id="app-page-search">search</div>);
+        return (<div id="app-page-search">
+                    <SearchBox onInputChangeListener={ text => console.log(text) } />
+                </div>);
     }
 }
 

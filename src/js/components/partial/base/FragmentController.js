@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-class PageController extends Component {
+class FragmentController extends Component {
     constructor (props) {
         super(props);
     }
@@ -11,10 +11,10 @@ class PageController extends Component {
 
     render () {
         const { current, children } = this.props;
-        return (<div className="app-pages">
+        return (<div className="app-fragments">
                     { this.props.children.filter(child => current === child.type.displayName) }
                 </div>);
     }
 }
 
-export default PageController;
+export default FragmentController;
