@@ -10,7 +10,7 @@ class List extends Component {
     }
 
     render () {
-        const { id, children, onItemClickListener } = this.props;
+        const { id, children } = this.props;
         return (<ul className="app-list">
                     { React.Children.map(children, child => {
                         return React.cloneElement(child, { onClickListener: this.handleItemClick.bind(this) });

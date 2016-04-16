@@ -11,7 +11,9 @@ export class SettingSidebarItem extends ListItem {
 
     render () {
         const { id, name } = this.props;
-        return React.cloneElement(super.render(), { ...this.props },
+        const props = { ...this.props };
+        delete props.id;
+        return React.cloneElement(super.render(), props,
             <a className="app-setting-item" href={ "#" + id }>{ name }</a>);
     }
 }
@@ -30,9 +32,5 @@ class SettingSidebar extends SecondarySidebar {
         return React.cloneElement(super.render(), { className: 'app-setting-sidebar' });
     }
 }
-
-SettingSidebar.propTypes = {
-    onItemClickListener: PropTypes.func,
-};
 
 export default SettingSidebar;

@@ -17,4 +17,8 @@ class FragmentController extends Component {
     }
 }
 
+FragmentController.propTypes = {
+    current: PropTypes.string.isRequired,
+};
+
 export default FragmentController;

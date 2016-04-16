@@ -14,8 +14,4 @@ class SecondarySidebar extends List {
     }
 }
 
-SecondarySidebar.propTypes = {
-    onItemClickListener: PropTypes.func,
-};
-
 export default SecondarySidebar;

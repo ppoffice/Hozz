@@ -31,8 +31,4 @@ class PrimarySidebar extends List {
     }
 }
 
-PrimarySidebar.propTypes = {
-    onItemClickListener: PropTypes.func,
-};
-
 export default PrimarySidebar;

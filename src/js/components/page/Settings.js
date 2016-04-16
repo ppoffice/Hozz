@@ -15,11 +15,15 @@ class Settings extends Component {
         return (<div className="app-page-settings">
                     <SettingSidebar onItemClickListener={ id => console.log(id) }>
                         <SettingSidebarItem id="ie" name="Import/Export" />
+                        <SettingSidebarItem id="lang" name="Language" />
                         <SettingSidebarItem id="about" name="About" />
                     </SettingSidebar>
                     <MainContent>
                         <Section id="ie" title="Import/Export">
                             import/export
+                        </Section>
+                        <Section id="lang" title="Language">
+                            language
                         </Section>
                         <Section id="about" title="About">
                             about

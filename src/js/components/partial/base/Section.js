@@ -7,7 +7,7 @@ class Section extends Component {
 
     render () {
         const { id, title, className, children } = this.props;
-        return (<section id={ id } className={ "app-section" + className ? " " + className : "" }>
+        return (<section id={ id } className={ "app-section" + (className ? " " + className : "") }>
                     { title ? <h2 className="app-section-title">{ title }</h2> : null }
                     <div className="app-section-content">
                         { children }

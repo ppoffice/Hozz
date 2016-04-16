@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { checkListener } from './Utils';
 
 class ListItem extends Component {
     constructor (props) {
@@ -7,7 +8,7 @@ class ListItem extends Component {
 
     render () {
         const { id, children, onClickListener } = this.props;
-        return (<li className="app-list-item" onClick={ onClickListener ? onClickListener.bind(null, id) : null }>
+        return (<li className="app-list-item" onClick={ checkListener(onClickListener).bind(null, id) }>
                     { children }
                 </li>);
     }
