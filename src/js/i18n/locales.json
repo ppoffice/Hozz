@@ -1,0 +1,10 @@
+{
+    "en-US": {
+        "name": "English(US)",
+        "file": "en-US.json"
+    },
+    "zh-CN": {
+        "name": "简体中文",
+        "file": "zh-CN.json"
+    }
+}
