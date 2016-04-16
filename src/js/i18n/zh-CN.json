@@ -1,3 +1,5 @@
 {
-    "welcome": "欢迎"
+    "welcome": {
+        "hello": "你好$$1"
+    }
 }

@@ -60,21 +60,14 @@ const get = (key, ...replacements) => {
     const namespaces = [...key.split('.')];
     if (!namespaces.length) return key;
     let value = locales[__locale__]['content'];
-    const fallback = locales[__safe_locale__]['content'];
+    let fallback = locales[__safe_locale__]['content'];
     while (namespace = namespaces.shift()) {
-        if (value[namespace]) {
-            value = value[namespace];
-        } else if (fallback[namespace]) {
-            value = fallback[namespace];
-        } else {
-            value = namespace;
-            break;
-        }
+        value = value[namespace] ? value[namespace] : (fallback[namespace] ? fallback[namespace] : namespace);
+        fallback = fallback[namespace] ? fallback[namespace] : new Object;
+        if (!namespaces.length) break;
     }
     const repl = [...replacements];
-    return value.replace(/\$\$[\d]+/g, match => {
-        repl.length ? repl.shift() : match;
-    });
+    return value.replace(/\$\$[\d]+/g, match => repl.length ? repl.shift() : match);
 }
 
 export default { get, getLocale, setLocale }

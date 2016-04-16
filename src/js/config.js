@@ -1,3 +1,5 @@
+const path = require('path');
+
 const {
     npm_package_name,
     npm_package_version,

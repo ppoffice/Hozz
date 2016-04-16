@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 
-import FragmentController from './partial/base/FragmentController';
+import Tray from './fragment/Tray';
+import Files from './fragment/Files';
+import Search from './fragment/Search';
+import Settings from './fragment/Settings';
+import FragmentController from './fragment/FragmentController';
 import PrimarySidebar, { PrimarySidebarItem } from './partial/PrimarySidebar';
-import Files from './page/Files';
-import Search from './page/Search';
-import Settings from './page/Settings';
 
 class App extends Component {
     constructor (props) {
@@ -31,6 +32,7 @@ class App extends Component {
                         <Search />
                         <Settings />
                     </FragmentController>
+                    <Tray />
                 </div>);
     }
 }
