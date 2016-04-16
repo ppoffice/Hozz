@@ -31,4 +31,4 @@ const focusCurrentWindow = () => {
     setDockIconVisibility();
 }
 
-export default { Menu, MenuItem, Tray }
+export default { remote, Menu, MenuItem, Tray, focusCurrentWindow }

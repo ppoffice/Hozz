@@ -6,6 +6,7 @@ import Search from './fragment/Search';
 import Settings from './fragment/Settings';
 import FragmentController from './fragment/FragmentController';
 import PrimarySidebar, { PrimarySidebarItem } from './partial/PrimarySidebar';
+import WindowHandler from './partial/electron/WindowHandler';
 
 class App extends Component {
     constructor (props) {
@@ -22,6 +23,7 @@ class App extends Component {
     render () {
         const { currentPage } = this.state;
         return (<div>
+                    <WindowHandler onMaximizeListener={ () => { console.log('max') } } />
                     <PrimarySidebar onItemClickListener={ this.handlePrimarySidebarItemClick.bind(this) }>
                         <PrimarySidebarItem id={ Files.displayName } name="Files" icon="file" />
                         <PrimarySidebarItem id={ Search.displayName } name="Search" icon="search" />

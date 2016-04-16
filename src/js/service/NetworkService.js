@@ -21,15 +21,9 @@ const download = (url) => {
         return new Promise((resolve, reject) => {
             const bufs = [];
             const readable = response.body;
-            readable.on('data', (b) => {
-                bufs.push(b);
-            });
-            readable.on('end', () => {
-                resolve(Buffer.concat(bufs));
-            });
-            readable.on('error', (e) => {
-                reject(e);
-            });
+            readable.on('data', bufs.push)
+            .on('end', () => { resolve(Buffer.concat(bufs)); })
+            .on('error', reject);
         });
     });
 }
