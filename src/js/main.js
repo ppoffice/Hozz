@@ -9,4 +9,4 @@ import App from './component/App';
  */
 document.getElementsByTagName('title')[0].innerText = APP_NAME;
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app-container'));
