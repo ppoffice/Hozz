@@ -17,7 +17,7 @@ class SearchBox extends Component {
         const { value } = this.state;
         return (<div className="app-search-box">
                     <input value={ value } onChange={ this.handleInputChange.bind(this) } />
-                    <span className="iconfont icon-delete"></span>
+                    <span className="material-icons">clear</span>
                 </div>);
     }
 }

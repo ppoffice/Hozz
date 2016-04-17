@@ -9,7 +9,7 @@ export class PrimarySidebarItem extends ListItem {
 
     render () {
         const { name, icon } = this.props;
-        return React.cloneElement(super.render(), { ...this.props }, <span className={ "iconfont icon-" + icon } title={ name }></span>);
+        return React.cloneElement(super.render(), { ...this.props }, <span className="material-icons" title={ name }>{ icon }</span>);
     }
 }
 

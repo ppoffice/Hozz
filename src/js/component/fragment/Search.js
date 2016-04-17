@@ -10,7 +10,7 @@ class Search extends Component {
     }
 
     render () {
-        return (<div id="app-page-search">
+        return (<div className="app-fragment" id="app-fragment-search">
                     <SearchBox onInputChangeListener={ text => console.log(text) } />
                 </div>);
     }

@@ -12,21 +12,21 @@ class Settings extends Component {
     }
 
     render () {
-        return (<div className="app-page-settings">
-                    <SettingSidebar onItemClickListener={ id => console.log(id) }>
-                        <SettingSidebarItem id="ie" name="Import/Export" />
-                        <SettingSidebarItem id="lang" name="Language" />
-                        <SettingSidebarItem id="about" name="About" />
+        return (<div className="app-fragment" id="app-fragment-settings">
+                    <SettingSidebar activeId="ie" onItemClickListener={ id => console.log(id) }>
+                        <SettingSidebarItem id="ie" icon="import_export" name="Import/Export" />
+                        <SettingSidebarItem id="lang" icon="language" name="Language" />
+                        <SettingSidebarItem id="about" icon="lightbulb_outline" name="About" />
                     </SettingSidebar>
                     <MainContent>
                         <Section id="ie" title="Import/Export">
-                            import/export
+                            Import/Export
                         </Section>
                         <Section id="lang" title="Language">
-                            language
+                            Language
                         </Section>
                         <Section id="about" title="About">
-                            about
+                            About
                         </Section>
                     </MainContent>
                 </div>);

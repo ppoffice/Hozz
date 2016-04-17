@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import List from './base/List';
 import ListItem from './base/ListItem';
 import { checkListener } from './base/Utils';
-import SecondarySidebar from './SecondarySidebar';
 
 export class FileSidebarItem extends ListItem {
     constructor (props) {
@@ -19,15 +18,15 @@ export class FileSidebarItem extends ListItem {
         const { id, name, onClickListener, onEditClickListner } = this.props;
         return React.cloneElement(super.render(), { ...this.props, onClick: null },
             (<div className="app-file-item">
-                <span className="status" onClick={ this.handleStatusClick.bind(this, id) }>O</span>
+                <span className="status" onClick={ this.handleStatusClick.bind(this, id) }></span>
                 <div className="app-file-item-center" onClick={ checkListener(onClickListener).bind(this, id) }>
                     <p className="file-name">{ name }</p>
                     <p>
-                        <i className="iconfont icon-cloud"></i>
-                        <span className="rule-count">{ 2000 }</span>
+                        <i className="material-icons cloud">cloud</i>
+                        <span className="rule-count">2000 Rules</span>
                     </p>
                 </div>
-                <span className="iconfont icon-edit" onClick={ checkListener(onEditClickListner).bind(this, id) }></span>
+                <span className="material-icons edit" title="Edit" onClick={ checkListener(onEditClickListner).bind(this, id) }>mode_edit</span>
             </div>));
     }
 }
@@ -60,9 +59,9 @@ export class FileSidebarGroup extends ListItem {
         return React.cloneElement(super.render(), { onClick: null },
             <div className={ "app-file-group" }>
                 <div className="app-file-group-title">
-                    <span className="status" onClick={ this.handleStatusClick.bind(this, id) }>O</span>
-                    <span onClick={ checkListener(onClickListener).bind(this, id) }>{ name }</span>
-                    <span className="iconfont icon-edit" onClick={ this.handleEditClick.bind(this, id) }></span>
+                    <span className="status" onClick={ this.handleStatusClick.bind(this, id) }></span>
+                    <div className="app-file-group-center" onClick={ checkListener(onClickListener).bind(this, id) }>{ name }</div>
+                    <span className="material-icons edit" title="Edit" onClick={ this.handleEditClick.bind(this, id) }>mode_edit</span>
                 </div>
                 <List onItemClickListener={ checkListener(onClickListener) }>{
                     React.Children.map(children, child => {
@@ -86,22 +85,28 @@ FileSidebarGroup.propTypes = {
     onItemStatusChangeListener: PropTypes.func,
 };
 
-class FileSidebar extends SecondarySidebar {
+class FileSidebar extends List {
     constructor (props) {
         super(props);
     }
 
     render () {
         const { children, onItemClickListener, onItemEditClickListener, onItemStatusChangeListener } = this.props;
-        return React.cloneElement(super.render(), { className: 'app-file-sidebar' }, React.Children.map(this.props.children, child => {
-            return React.cloneElement(child, {
-                onClickListener: checkListener(onItemClickListener),
-                onEditClickListner: checkListener(onItemEditClickListener),
-                onStatusChangeListner: checkListener(onItemStatusChangeListener),
-                onItemEditClickListener: checkListener(onItemEditClickListener),
-                onItemStatusChangeListener: checkListener(onItemStatusChangeListener),
-            });
-        }));
+        return (<div className="app-secondary-sidebar app-file-sidebar">
+                    <h2 className="app-secondary-sidebar-title">
+                        <span className="app-window-draggable">Files</span>
+                        <span className="material-icons add">add</span>
+                    </h2>
+                    { React.cloneElement(super.render(), {}, React.Children.map(this.props.children, child => {
+                        return React.cloneElement(child, {
+                            onClickListener: checkListener(onItemClickListener),
+                            onEditClickListner: checkListener(onItemEditClickListener),
+                            onStatusChangeListner: checkListener(onItemStatusChangeListener),
+                            onItemEditClickListener: checkListener(onItemEditClickListener),
+                            onItemStatusChangeListener: checkListener(onItemStatusChangeListener),
+                        });
+                    })) }
+                </div>);
     }
 }
 

@@ -30,7 +30,7 @@
     "classnames": "^2.2.1",
     "codemirror": "^5.10.0",
     "electron-packager": "^5.2.0",
-    "electron-prebuilt": "^0.36.0",
+    "electron-prebuilt": "^0.37.6",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
     "gulp-sass": "^2.1.1",
@@ -50,6 +50,6 @@
     "webpack": "^1.12.9"
   },
   "dependencies": {
-    "electron-sudo": "^3.0.2"
+    "electron-sudo": "^3.0.4"
   }
 }

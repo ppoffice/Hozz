@@ -34,8 +34,8 @@ class App extends Component {
                         maximized={ isMaximized }
                         onMaximizeListener={ this.handleMaximize.bind(this, true) }
                         onUnmaximizeListener={ this.handleMaximize.bind(this, false) } />
-                    <PrimarySidebar onItemClickListener={ this.handlePrimarySidebarItemClick.bind(this) }>
-                        <PrimarySidebarItem id={ Files.displayName } name="Files" icon="file" />
+                    <PrimarySidebar activeId={ Files.displayName } onItemClickListener={ this.handlePrimarySidebarItemClick.bind(this) }>
+                        <PrimarySidebarItem id={ Files.displayName } name="Files" icon="insert_drive_file" />
                         <PrimarySidebarItem id={ Search.displayName } name="Search" icon="search" />
                         <PrimarySidebarItem id={ Settings.displayName } name="Settings" icon="settings" />
                     </PrimarySidebar>

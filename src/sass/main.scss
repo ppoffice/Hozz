@@ -2,8 +2,22 @@
 
 $app-default-padding: 15px;
 $app-default-border-radius: 4px;
-$app-default-font-icon: 'iconfont';
 $app-default-font-family: 'Myriad Set Pro', 'Helvetica Neue', 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+
+$app-color-theme: rgb(2, 187, 0);
+$app-color-red: rgb(253, 65, 33);
+$app-color-grey: rgb(68, 68, 68);
+$app-color-dark: rgb(48, 48, 48);
+$app-color-light: rgb(250, 250, 250);
+$app-color-text-grey: rgb(204, 204, 204);
+
+@mixin clearfix {
+    &:after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+}
 
 * {
     outline: none;
@@ -19,7 +33,6 @@ body {
     font: 12px $app-default-font-family;
     .iconfont {
         -webkit-text-stroke-width: 0px;
-        font-family: $app-default-font-icon;
     }
 }
 
@@ -32,9 +45,8 @@ body {
     right: $app-default-padding;
     bottom: $app-default-padding;
     border-radius: $app-default-border-radius;
-    background: white;
-    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 0, 0, 0.1);
-    &.maximized {
+    box-shadow: 0 0 $app-default-padding rgba(0, 0, 0, 0.1);
+    &.app-maximized {
         top: 0;
         left: 0;
         right: 0;
@@ -42,8 +54,205 @@ body {
     }
 }
 
+.app-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.app-fragments,
+.app-primary-sidebar {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+}
+
+.app-primary-sidebar {
+    left: 0;
+    background: #2b2b2b;
+    color: $app-color-text-grey;
+    .app-list-item {
+        padding: 12px;
+        &.active {
+            color: $app-color-theme;
+        }
+        &:hover:not(.active) {
+            color: white;
+        }
+        .material-icons {
+            font-size: 24px;
+            cursor: pointer;
+        }
+    }
+}
+
+.app-fragments {
+    right: 0;
+    left: 48px;
+    overflow: hidden;
+    background: $app-color-light;
+    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.4);
+    border-top-right-radius: $app-default-border-radius;
+    border-bottom-right-radius: $app-default-border-radius;
+    .app-fragment,
+    .app-main-content,
+    .app-secondary-sidebar {
+        top: 0;
+        bottom: 0;
+        position: absolute;
+    }
+    .app-fragment {
+        left: 0;
+        right: 0;
+    }
+    .app-secondary-sidebar {
+        left: 0;
+        width: 240px;
+        background: #3a3a3a;
+        color: $app-color-text-grey;
+    }
+    .app-secondary-sidebar-title {
+        margin: 0;
+        font-size: 14px;
+        line-height: 20px;
+        position: relative;
+        font-weight: normal;
+        padding: 10px $app-default-padding;
+    }
+    .app-main-content {
+        right: 0;
+        left: 240px;
+    }
+}
+
+.app-file-sidebar {
+    .app-secondary-sidebar-title {
+        .app-window-draggable {
+            display: block;
+            margin-right: 20px;
+        }
+        .add {
+            top: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            margin-top: -10px;
+            position: absolute;
+            right: $app-default-padding;
+        }
+    }
+    .app-file-item,
+    .app-file-group-title {
+        @include clearfix;
+        position: relative;
+        &:hover {
+            color: white;
+            .edit {
+                display: inline-block;
+            }
+        }
+        .edit,
+        .status {
+            top: 50%;
+            cursor: pointer;
+            position: absolute;
+        }
+        .status {
+            width: 10px;
+            height: 10px;
+            margin-top: -5px;
+            border-radius: 50%;
+            display: inline-block;
+            left: $app-default-padding;
+            background: $app-color-theme;
+        }
+        .edit {
+            right: $app-default-padding;
+            display: none;
+            margin-top: -7px;
+        }
+        .app-file-item-center,
+        .app-file-group-center {
+            padding: 6px 40px;
+            p {
+                margin: 0;
+                line-height: 20px;
+            }
+            p:not(.file-name) {
+                color: $app-color-text-grey - #444;
+            }
+            .cloud {
+                margin-right: 5px;
+                vertical-align: sub;
+            }
+        }
+        .material-icons {
+            font-size: 14px;
+            line-height: 14px;
+        }
+    }
+    .app-file-group-title {
+        background: $app-color-dark;
+        .app-file-group-center {
+            cursor: pointer;
+        }
+    }
+    .app-file-item:hover {
+        background: $app-color-grey;
+    }
+}
+
+.app-setting-sidebar {
+    .app-list-item {
+        &.active .app-setting-item {
+            color: $app-color-theme;
+            background: $app-color-dark;
+        }
+        &:hover:not(.active) .app-setting-item {
+            background: $app-color-grey;
+        }
+    }
+    .app-setting-item {
+        display: block;
+        cursor: pointer;
+        line-height: 18px;
+        text-decoration: none;
+        color: $app-color-text-grey;
+        padding: 10px $app-default-padding;
+        .material-icons {
+            font-size: 18px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+    }
+}
+
 .app-section {
     .app-section-content {
 
+    }
+}
+
+.app-window-draggable {
+    -webkit-app-region: drag;
+}
+
+.app-window-controls {
+    top: 0;
+    right: 0;
+    z-index: 100;
+    margin: 5px 0;
+    position: absolute;
+    .iconfont {
+        padding: 5px;
+        cursor: pointer;
+        font-size: 20px;
+        line-height: 20px;
+        &:hover {
+            background: #f2f2f2;
+        }
+    }
+    .icon-close:hover {
+        color: white;
+        background: $app-color-red;
     }
 }
