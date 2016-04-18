@@ -31,7 +31,9 @@ class SettingSidebar extends List {
     render () {
         return (<div className="app-secondary-sidebar app-setting-sidebar">
                     <h2 className="app-secondary-sidebar-title app-window-draggable">Settings</h2>
+                    <div className="app-sidebar-list-container">
                     { super.render() }
+                    </div>
                 </div>);
     }
 }

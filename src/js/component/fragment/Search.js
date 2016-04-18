@@ -11,6 +11,7 @@ class Search extends Component {
 
     render () {
         return (<div className="app-fragment" id="app-fragment-search">
+                    <div className="app-titlebar app-window-draggable"></div>
                     <SearchBox onInputChangeListener={ text => console.log(text) } />
                 </div>);
     }
