@@ -24,6 +24,11 @@ class HostsInfoDialog extends Component {
         onInputChange && onInputChange(this.state.name, e.target.value);
     }
 
+    __onPressEnter (e) {
+        const { onHostDialogOK } = this.props;
+        onHostDialogOK && e.keyCode === 13 && onHostDialogOK();
+    }
+
     render() {
         const { name, url, onDismiss } = this.props;
         return (<div className="popover new-hosts-dialog">
@@ -40,11 +45,13 @@ class HostsInfoDialog extends Component {
                                 type="text"
                                 defaultValue={ name }
                                 placeholder={ Lang.get('common.name') }
+                                onKeyDown={ this.__onPressEnter.bind(this) }
                                 onChange={ this.__onNameChange.bind(this) } />
                             <input
                                 type="text"
                                 defaultValue={ url }
                                 onChange={ this.__onUrlChange.bind(this) }
+                                onKeyDown={ this.__onPressEnter(this) }
                                 placeholder={ Lang.get('main.remote_source_url') } />
                         </div>
                     </div>
@@ -58,6 +65,7 @@ HostsInfoDialog.propTypes = {
     name: PropTypes.string,
     onDismiss: PropTypes.func,
     onInputChange: PropTypes.func,
+    onHostDialogOK: PropTypes.func,
 }
 
 export default HostsInfoDialog;

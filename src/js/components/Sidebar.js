@@ -126,6 +126,7 @@ class Sidebar extends Component {
                             url={ editingHosts ? editingHosts.url : '' }
                             name={ editingHosts ? editingHosts.name : '' }
                             onDismiss={ this.__onDialogDismiss.bind(this) }
+                            onHostDialogOK={ this.__onHostsDialogOKClick.bind(this) }
                             onInputChange={ this.__onDialogInputChange.bind(this) } /> : null }
                 </div>);
     }
