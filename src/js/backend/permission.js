@@ -1,5 +1,5 @@
 const path = require('path');
-const sudo = global.require('./node_modules/electron-sudo');
+const sudo = global.require('electron-sudo');
 
 import { APP_NAME } from '../constants';
 
