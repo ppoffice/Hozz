@@ -22,10 +22,10 @@ gulp.task('clean', function (callback) {
 gulp.task('copy', function () {
     gulp.src(['./src/browser.js', './src/app.config.js', './src/*.html'])
         .pipe(gulp.dest('./app'));
-    gulp.src(['./src/assets/**'])
+    gulp.src(['./src/assets/*/**'])
         .pipe(gulp.dest('./app/assets'));
     gulp.src(['./package.json']).pipe(gulp.dest('./app'));
-    gulp.src(['./node_modules/electron-sudo/**'])
+    gulp.src(['./node_modules/electron-sudo/*/**'])
         .pipe(gulp.dest('./app/node_modules/electron-sudo'));
 });
 
