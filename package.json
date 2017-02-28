@@ -49,6 +49,6 @@
     "webpack": "^1.12.9"
   },
   "dependencies": {
-    "electron-sudo": "^3.0.2"
+    "electron-sudo": "git+https://github.com/ppoffice/electron-sudo.git"
   }
 }

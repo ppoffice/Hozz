@@ -9,6 +9,7 @@ import { EVENT,
          NO_PERM_ERROR_TAG_WIN32 } from '../constants';
 
 import io from '../backend/io';
+import log from '../backend/log';
 import event from '../backend/event';
 import Hosts from '../backend/hosts';
 import Lang from '../backend/language';
@@ -201,8 +202,9 @@ class App extends Component {
                     {
                         name: Lang.get('main.grant_permission'),
                         onClick: () => {
-                            permission.enableFullAccess();
-                            this.__onSnackDismiss();
+                            permission.enableFullAccess().then(() => {
+                                this.__onSnackDismiss();
+                            }).catch(log);
                         }
                     },
                 ]

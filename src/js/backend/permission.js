@@ -1,9 +1,9 @@
 const path = require('path');
-const sudo = global.require('./node_modules/electron-sudo');
 
-import { APP_NAME } from '../constants';
+import Sudoer from 'electron-sudo';
+import { APP_NAME } from "../constants";
 
-const SUDO_OPTION = {
+const SUDO_OPTIONS = {
     name: APP_NAME,
     icns: path.join(global.__dirname, './assets/images/icon.icns'),
     process: {
@@ -14,35 +14,23 @@ const SUDO_OPTION = {
     }
 };
 
-const sudoExec = (command) => {
-    return new Promise((resolve, reject) => {
-        sudo.exec(command, SUDO_OPTION, (error, stdout, stderr) => {
-            if (error) {
-                return reject(error);
-            }
-            return resolve(stdout, stderr);
-        });
-    });
-};
-
 const enableFullAccess = () => {
     let command;
+    const sudoer = new Sudoer(SUDO_OPTIONS);
     switch (process.platform) {
         case 'win32':
             command = path.join(global.__dirname, './assets/scripts/win32.bat');
             break;
         case 'darwin':
-            command = '/usr/sbin/chown `/usr/bin/whoami` /etc/hosts && /bin/chmod 644 /etc/hosts';
-            break;
         case 'linux':
-            command = '/bin/chown `/usr/bin/whoami` /etc/hosts && /bin/chmod 644 /etc/hosts';
+            command = '/bin/chmod +a "`/usr/bin/whoami` allow read,write" /etc/hosts';
             break;
         default:
             command = '';
             break;
     }
-    return sudoExec(command);
-}
+    return sudoer.exec(command);
+};
 
 export default {
     enableFullAccess,

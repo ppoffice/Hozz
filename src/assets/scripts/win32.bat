@@ -1,2 +1,2 @@
 attrib -R %WINDIR%\\System32\\drivers\\etc\\hosts
-cacls %WINDIR%\\System32\\drivers\\etc\\hosts /e /p %username%:f
+Icacls %WINDIR%\\System32\\drivers\\etc\\hosts /grant "%username%":F

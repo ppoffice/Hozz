@@ -51,7 +51,7 @@ let appIcon;
 event.on(EVENT.SET_HOSTS_MENU, (__menus) => {
     if (!appIcon) {
         if (process.platform === 'darwin') {
-            appIcon = new Tray(path.join(global.__dirname, './assets/images/tray-osx.png'));
+            appIcon = new Tray(path.join(global.__dirname, './assets/images/trayOSXTemplate.png'));
         } else  {
             appIcon = new Tray(path.join(global.__dirname, './assets/images/icon@16px.png'));
         }

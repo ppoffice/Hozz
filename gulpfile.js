@@ -25,8 +25,8 @@ gulp.task('copy', function () {
     gulp.src(['./src/assets/*', './src/assets/*/**'])
         .pipe(gulp.dest('./app/assets'));
     gulp.src(['./package.json']).pipe(gulp.dest('./app'));
-    gulp.src(['./node_modules/electron-sudo/*', './node_modules/electron-sudo/*/**'])
-        .pipe(gulp.dest('./app/node_modules/electron-sudo'));
+    gulp.src(['./node_modules/electron-sudo/src/bin/*', './node_modules/electron-sudo/src/bin/*/**'])
+        .pipe(gulp.dest('./app/bin'));
 });
 
 gulp.task('webpack', function (callback) {
