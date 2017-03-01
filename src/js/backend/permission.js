@@ -14,7 +14,7 @@ const enableFullAccess = () => {
     const sudoer = new Sudoer(OPTIONS);
     switch (process.platform) {
         case 'win32':
-            command = path.join(global.__dirname, './assets/scripts/win32.bat');
+            command = "\"" + path.join(global.__dirname, './assets/scripts/win32.bat') + "\"";
             break;
         case 'darwin':
             command = '/bin/chmod +a "`/usr/bin/whoami` allow read,write" /etc/hosts';
