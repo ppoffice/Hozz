@@ -32,6 +32,7 @@
     "electron-prebuilt": "^0.36.0",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
+    "gulp-convert-newline": "0.0.3",
     "gulp-sass": "^2.1.1",
     "gulp-util": "^3.0.7",
     "json-loader": "^0.5.4",

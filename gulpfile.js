@@ -7,6 +7,7 @@ var webpack = require('webpack');
 var clean = require('gulp-clean');
 var packager = require('electron-packager');
 var childProcess = require('child_process');
+var convertNewline = require("gulp-convert-newline");
 
 var packageInfo = require('./package.json');
 var webpackConfig = require('./webpack.config.js');
@@ -22,11 +23,14 @@ gulp.task('clean', function (callback) {
 gulp.task('copy', function () {
     gulp.src(['./src/browser.js', './src/app.config.js', './src/*.html'])
         .pipe(gulp.dest('./app'));
-    gulp.src(['./src/assets/*', './src/assets/*/**'])
+    gulp.src(['./src/assets/*', './src/assets/*/**', '!./src/assets/scripts/*.sh'])
         .pipe(gulp.dest('./app/assets'));
     gulp.src(['./package.json']).pipe(gulp.dest('./app'));
     gulp.src(['./node_modules/electron-sudo/src/bin/*', './node_modules/electron-sudo/src/bin/*/**'])
         .pipe(gulp.dest('./app/bin'));
+    gulp.src('./src/assets/scripts/*.sh')
+        .pipe(convertNewline())
+        .pipe(gulp.dest('./app/assets/scripts'));
 });
 
 gulp.task('webpack', function (callback) {
