@@ -23,7 +23,7 @@ import SnackBar from './SnackBar';
 
 const getPosition = (element) => {
     return Array.prototype.slice.call(element.parentElement.children).indexOf(element);
-}
+};
 
 class App extends Component {
     constructor(props) {
@@ -193,6 +193,23 @@ class App extends Component {
         this.setState({ snack: null });
     }
 
+    __onLinuxPermissionSet() {
+        this.setState({
+            snack: {
+                type: 'info',
+                text: Lang.get('main.have_to_logout_for_permission'),
+                actions: [
+                    {
+                        name: Lang.get('common.ok'),
+                        onClick: () => {
+                            this.__onSnackDismiss();
+                        }
+                    },
+                ]
+            }
+        });
+    }
+
     __onPermissionError () {
         this.setState({
             snack: {
@@ -203,7 +220,11 @@ class App extends Component {
                         name: Lang.get('main.grant_permission'),
                         onClick: () => {
                             permission.enableFullAccess().then(() => {
-                                this.__onSnackDismiss();
+                                if (process.platform !== 'linux') {
+                                    this.__onSnackDismiss();
+                                } else {
+                                    this.__onLinuxPermissionSet();
+                                }
                             }).catch(log);
                         }
                     },

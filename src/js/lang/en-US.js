@@ -32,6 +32,7 @@ export default {
     main: {
         'grant_permission': 'Grant Permission',
         'dont_have_permission': 'You don\'t have the permission to write to hosts file.',
+        'have_to_logout_for_permission': 'You have to logout and login again for the permission change to take effect.',
 
         'edit_hosts': 'Edit Hosts',
         'create_new_hosts': 'Create New Hosts',

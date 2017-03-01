@@ -283,6 +283,9 @@ button {
         padding: 10px 15px;
         position: absolute;
         background: $color-theme;
+        &.snackbar-info {
+            background: $color-theme-blue;
+        }
         &.snackbar-danger {
             background: $color-theme-red;
         }

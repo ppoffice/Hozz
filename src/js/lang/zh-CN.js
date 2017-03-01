@@ -32,6 +32,7 @@ export default {
     main: {
         'grant_permission': '授予权限',
         'dont_have_permission': '你没有写入系统Hosts文件的权限。',
+        'have_to_logout_for_permission': '你需要注销并重新登录来使权限变更生效。',
 
         'edit_hosts': '编辑Hosts',
         'create_new_hosts': '新建Hosts',

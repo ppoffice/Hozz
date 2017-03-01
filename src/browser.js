@@ -156,6 +156,5 @@ app.on('ready', function () {
 
     if (process.platform == "darwin") {
         Menu.setApplicationMenu(menu);
-    };
-
+    }
 });
