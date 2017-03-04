@@ -12,7 +12,7 @@ const {
  */
 export const APP_NAME       = npm_package_name;
 export const APP_VERSION    = npm_package_version;
-export const APP_AUTHER     = npm_package_version;
+export const APP_AUTHOR     = npm_package_author_name;
 export const APP_HOMEPAGE   = npm_package_homepage;
 
 /**

@@ -124,7 +124,7 @@ body {
     border-top-right-radius: $app-layout-border-radius;
     border-bottom-right-radius: $app-layout-border-radius;
     .app-fragment,
-    .app-main-content,
+    .app-main-container,
     .app-secondary-sidebar {
         top: 0;
         bottom: 0;
@@ -151,7 +151,7 @@ body {
         font-weight: normal;
         padding: 10px $app-layout-padding;
     }
-    .app-main-content {
+    .app-main-container {
         right: 0;
         padding-top: 40px;
         left: $app-secondary-sidebar-width;
@@ -307,7 +307,7 @@ body {
         margin: 0 0 10px;
         font-weight: normal;
     }
-    .app-section-content {
+    .app-section-container {
 
     }
 }

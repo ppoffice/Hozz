@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
 
-import Section from '../partial/base/Section';
-import MainContent from '../partial/MainContent';
-import SettingSidebar, { SettingSidebarItem } from '../partial/SettingSidebar';
+import { APP_NAME, APP_AUTHOR, APP_HOMEPAGE, APP_VERSION } from '../config';
+import Section from './commons/Section';
+import MainContainer from './MainContainer';
+import SettingsSidebar, { SettingsSidebarItem } from './SettingsSidebar';
 
-class Settings extends Component {
-    static displayName = "Settings";
+class SettingsFragment extends Component {
+    static displayName = "SettingsFragment";
 
     constructor (props) {
         super(props);
@@ -14,13 +15,13 @@ class Settings extends Component {
 
     render () {
         return (<div className="app-fragment" id="app-fragment-settings">
-                    <SettingSidebar activeId="ie" onItemClickListener={ id => console.log(id) }>
-                        <SettingSidebarItem id="ie" icon="import_export" name="Import/Export" />
-                        <SettingSidebarItem id="sync" icon="sync" name="Sync" />
-                        <SettingSidebarItem id="lang" icon="language" name="Language" />
-                        <SettingSidebarItem id="about" icon="lightbulb_outline" name="About" />
-                    </SettingSidebar>
-                    <MainContent>
+                    <SettingsSidebar activeId="ie" onItemClickListener={ id => console.log(id) }>
+                        <SettingsSidebarItem id="ie" icon="import_export" name="Import/Export" />
+                        <SettingsSidebarItem id="sync" icon="sync" name="Sync" />
+                        <SettingsSidebarItem id="lang" icon="language" name="Language" />
+                        <SettingsSidebarItem id="about" icon="lightbulb_outline" name="About" />
+                    </SettingsSidebar>
+                    <MainContainer>
                         <div className="app-titlebar app-window-draggable"></div>
                         <Section id="ie" title="Import/Export">
                             <div>
@@ -51,11 +52,12 @@ class Settings extends Component {
                                 onChange={ null } />
                         </Section>
                         <Section id="about" title="About">
-                            About
+                            { APP_NAME } by { APP_AUTHOR }
+                            Current Version: { APP_VERSION }
                         </Section>
-                    </MainContent>
+                    </MainContainer>
                 </div>);
     }
 }
 
-export default Settings;
+export default SettingsFragment;

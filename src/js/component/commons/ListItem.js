@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { checkListener } from './Utils';
+import { checkListener, noop } from '../../utils/Utils';
 
 class ListItem extends Component {
     constructor (props) {
@@ -14,6 +14,11 @@ class ListItem extends Component {
                 </li>);
     }
 }
+
+ListItem.defaultProps = {
+    active: false,
+    onClickListener: noop
+};
 
 ListItem.propTypes = {
     active: PropTypes.bool,

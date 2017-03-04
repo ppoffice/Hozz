@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import Menu from './Menu';
-import { checkListener } from '../base/Utils';
-import Electron from '../../../service/ElectronService';
+import { checkListener } from '../../utils/Utils';
+import Electron from '../../services/ElectronService';
 
 class MenuItem extends Component {
     constructor (props) {

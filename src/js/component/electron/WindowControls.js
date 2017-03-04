@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-import { checkListener } from '../base/Utils';
-import Electron from '../../../service/ElectronService';
+import { checkListener } from '../../utils/Utils';
+import Electron from '../../services/ElectronService';
 
 let __window__;
 
@@ -38,11 +38,11 @@ class WindowControls extends Component {
     render () {
         const { maximized } = this.props;
         return (<div className="app-window-controls">
-                    <i className="iconfont icon-minimize" onClick={ this.handleControlClick.bind(this, 'minimize') }></i>
+                    <i className="iconfont icon-minimize" onClick={ this.handleControlClick.bind(this, 'minimize') }/>
                     { maximized ?
-                        <i className="iconfont icon-restore" onClick={ this.handleControlClick.bind(this, 'restore') }></i> :
-                        <i className="iconfont icon-maximize" onClick={ this.handleControlClick.bind(this, 'maximize') }></i> }
-                    <i className="iconfont icon-close" onClick={ this.handleControlClick.bind(this, 'close') }></i>
+                        <i className="iconfont icon-restore" onClick={ this.handleControlClick.bind(this, 'restore') }/> :
+                        <i className="iconfont icon-maximize" onClick={ this.handleControlClick.bind(this, 'maximize') }/> }
+                    <i className="iconfont icon-close" onClick={ this.handleControlClick.bind(this, 'close') }/>
                 </div>);
     }
 }
@@ -51,6 +51,6 @@ WindowControls.propTypes = {
     maximized: PropTypes.bool,
     onMaximizeListener: PropTypes.func,
     onUnmaximizeListener: PropTypes.func,
-}
+};
 
 export default WindowControls;

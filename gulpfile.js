@@ -1,18 +1,18 @@
-var path = require('path');
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var process = require('process');
-var gutil = require('gulp-util');
-var webpack = require('webpack');
-var clean = require('gulp-clean');
-var packager = require('electron-packager');
-var childProcess = require('child_process');
-var convertNewline = require("gulp-convert-newline");
+const path = require('path');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const process = require('process');
+const gutil = require('gulp-util');
+const webpack = require('webpack');
+const clean = require('gulp-clean');
+const packager = require('electron-packager');
+const childProcess = require('child_process');
+const convertNewline = require("gulp-convert-newline");
 
-var packageInfo = require('./package.json');
-var webpackConfig = require('./webpack.config.js');
+const packageInfo = require('./package.json');
+const webpackConfig = require('./webpack.config.js');
 
-var APP_NAME = packageInfo.name;
+const APP_NAME = packageInfo.name;
 
 gulp.task('clean', function (callback) {
     gulp.src(['./app', './build'], {read: false})
@@ -56,8 +56,8 @@ gulp.task('sass', function () {
 
 gulp.task('build', ['copy', 'sass', 'webpack']);
 
-var deleteUselessFiles = function (platform, distPath) {
-    var filesToBeRemoved = [];
+const deleteUselessFiles = function (platform, distPath) {
+    let filesToBeRemoved = [];
     switch (platform) {
         case 'win32':
             filesToBeRemoved = [
@@ -100,11 +100,11 @@ var deleteUselessFiles = function (platform, distPath) {
     });
     console.log('Removed unnecessary files.');
     return gulp.src(filesToBeRemoved).pipe(clean());
-}
+};
 
-var compressFiles = function (platform, distPath, callback) {
-    var upx = '';
-    var filesToBeCompressed = [];
+const compressFiles = function (platform, distPath, callback) {
+    let upx = '';
+    let filesToBeCompressed = [];
     switch (platform) {
         case 'win32':
             upx = path.join(__dirname, 'tools/upx.exe')
@@ -130,7 +130,7 @@ var compressFiles = function (platform, distPath, callback) {
     }
     console.log('Compressing executables...');
     filesToBeCompressed.forEach((file) => {
-        var fullPath = path.join(distPath, file);
+        const fullPath = path.join(distPath, file);
         childProcess.exec(upx + ' -9 ' + fullPath, function (error, stdout, stderr) {
             if (error) {
                 gutil.log(error);
@@ -138,10 +138,10 @@ var compressFiles = function (platform, distPath, callback) {
             gutil.log(stdout, stderr);
         });
     });
-}
+};
 
-var buildPackage = function (platform, arch, callback) {
-    var icon;
+const buildPackage = function (platform, arch, callback) {
+    let icon;
     switch (platform) {
         case 'win32':
             icon = './app/assets/images/icon.ico';
@@ -163,17 +163,16 @@ var buildPackage = function (platform, arch, callback) {
         platform: platform,
     }, function (err, appPath) {
         if (appPath) {
-            var distPath = appPath[0];
-            console.log(distPath)
+            const distPath = appPath[0];
             callback && callback(platform, arch, distPath);
         }
     });
-}
+};
 
-var afterPackage = function (platform, arch, distPath) {
+const afterPackage = function (platform, arch, distPath) {
     deleteUselessFiles(platform, distPath);
     compressFiles(platform, distPath);
-}
+};
 
 gulp.task('package', ['build'], function (callback) {
     gulp.src('./app/*.map').pipe(clean());

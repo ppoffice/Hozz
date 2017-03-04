@@ -1,16 +1,16 @@
 const path = require('path') ;
 import React, { Component, PropTypes } from 'react';
 
-import Tray from '../partial/electron/Tray';
-import Menu from '../partial/electron/Menu';
-import MenuItem from '../partial/electron/MenuItem';
-import MenuSeparator from '../partial/electron/MenuSeparator';
+import Tray from './electron/Tray';
+import Menu from './electron/Menu';
+import MenuItem from './electron/MenuItem';
+import MenuSeparator from './electron/MenuSeparator';
 
-import { APP_NAME } from '../../config';
+import { APP_NAME } from '../config';
 
-const TRAY_ICON_PATH = process.platform === 'darwin' ? './assets/images/tray-osx.png' : './assets/images/icon@16px.png';
+const TRAY_ICON_PATH = process.platform === 'darwin' ? './assets/images/trayTemplate.png' : './assets/images/icon@16px.png';
 
-export default class _Tray extends Component {
+export default class ApplicationTray extends Component {
     constructor (props) {
         super(props);
     }

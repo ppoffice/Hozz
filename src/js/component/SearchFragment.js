@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
-import SearchBox from '../partial/SearchBox';
+import SearchBox from './SearchBox';
 
-class Search extends Component {
-    static displayName = "Search";
+class SearchFragment extends Component {
+    static displayName = "SearchFragment";
 
     constructor (props) {
         super(props);
@@ -17,4 +17,4 @@ class Search extends Component {
     }
 }
 
-export default Search;
+export default SearchFragment;

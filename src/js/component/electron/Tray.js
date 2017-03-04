@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import Electron from '../../../service/ElectronService';
+import Electron from '../../services/ElectronService';
 
 let __tray__;
 

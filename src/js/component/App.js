@@ -1,20 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import Tray from './fragment/Tray';
-import Files from './fragment/Files';
-import Search from './fragment/Search';
-import Settings from './fragment/Settings';
-import FragmentController from './fragment/FragmentController';
-import PrimarySidebar, { PrimarySidebarItem } from './partial/PrimarySidebar';
-import WindowControls from './partial/electron/WindowControls';
+import TabBar, { TabBarItem } from './TabBar';
+import FilesFragment from './FilesFragment';
+import SearchFragment from './SearchFragment';
+import SettingsFragment from './SettingsFragment';
+import FragmentController from './FragmentController';
+
+import ApplicationTray from './ApplicationTray';
+import WindowControls from './electron/WindowControls';
 
 class App extends Component {
     constructor (props) {
         super(props);
         this.state = {
             isMaximized: false,
-            currentPage: Files.displayName,
+            currentPage: FilesFragment.displayName,
         };
     }
 
@@ -34,17 +35,17 @@ class App extends Component {
                         maximized={ isMaximized }
                         onMaximizeListener={ this.handleMaximize.bind(this, true) }
                         onUnmaximizeListener={ this.handleMaximize.bind(this, false) } />
-                    <PrimarySidebar activeId={ Files.displayName } onItemClickListener={ this.handlePrimarySidebarItemClick.bind(this) }>
-                        <PrimarySidebarItem id={ Files.displayName } name="Files" icon="insert_drive_file" />
-                        <PrimarySidebarItem id={ Search.displayName } name="Search" icon="search" />
-                        <PrimarySidebarItem id={ Settings.displayName } name="Settings" icon="settings" />
-                    </PrimarySidebar>
+                    <TabBar activeId={ FilesFragment.displayName } onItemClickListener={ this.handlePrimarySidebarItemClick.bind(this) }>
+                        <TabBarItem id={ FilesFragment.displayName } name="Files" icon="insert_drive_file" />
+                        <TabBarItem id={ SearchFragment.displayName } name="Search" icon="search" />
+                        <TabBarItem id={ SettingsFragment.displayName } name="Settings" icon="settings" />
+                    </TabBar>
                     <FragmentController current={ currentPage }>
-                        <Files />
-                        <Search />
-                        <Settings />
+                        <FilesFragment />
+                        <SearchFragment />
+                        <SettingsFragment />
                     </FragmentController>
-                    <Tray />
+                    <ApplicationTray />
                 </div>);
     }
 }

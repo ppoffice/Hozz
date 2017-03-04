@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import List from './base/List';
-import ListItem from './base/ListItem';
-import { checkListener } from './base/Utils';
+import List from './commons/List';
+import ListItem from './commons/ListItem';
+import { checkListener } from '../utils/Utils';
 
-export class FileSidebarItem extends ListItem {
+export class FilesSidebarItem extends ListItem {
     constructor (props) {
         super(props);
     }
@@ -19,7 +19,7 @@ export class FileSidebarItem extends ListItem {
         const { id, name, onClickListener, onEditClickListner } = this.props;
         return React.cloneElement(super.render(), { ...this.props, onClick: null },
             (<div className="app-file-item">
-                <span className="status" onClick={ this.handleStatusClick.bind(this, id) }></span>
+                <span className="status" onClick={ this.handleStatusClick.bind(this, id) }/>
                 <div className="app-file-item-center" onClick={ checkListener(onClickListener).bind(this, id) }>
                     <p className="file-name">{ name }</p>
                     <p>
@@ -32,7 +32,7 @@ export class FileSidebarItem extends ListItem {
     }
 }
 
-FileSidebarItem.propTypes = {
+FilesSidebarItem.propTypes = {
     id: PropTypes.any.isRequired,
     name: PropTypes.string.isRequired,
     onClickListener: PropTypes.func,
@@ -40,7 +40,7 @@ FileSidebarItem.propTypes = {
     onStatusChangeListner: PropTypes.func,
 };
 
-export class FileSidebarGroup extends ListItem {
+export class FilesSidebarGroup extends ListItem {
     constructor (props) {
         super(props);
     }
@@ -60,11 +60,11 @@ export class FileSidebarGroup extends ListItem {
         const className = cx({
             'collapsed': collapsed,
             'app-file-group': true,
-        })
+        });
         return React.cloneElement(super.render(), { onClick: null },
             <div className={ className }>
                 <div className="app-file-group-title">
-                    <span className="status" onClick={ this.handleStatusClick.bind(this, id) }></span>
+                    <span className="status" onClick={ this.handleStatusClick.bind(this, id) }/>
                     <div className="app-file-group-center" onClick={ checkListener(onClickListener).bind(this, id) }>{ name }</div>
                     <span className="material-icons edit" title="Edit" onClick={ this.handleEditClick.bind(this, id) }>mode_edit</span>
                     <span className="material-icons arrow">arrow_drop_down</span>
@@ -81,7 +81,7 @@ export class FileSidebarGroup extends ListItem {
     }
 }
 
-FileSidebarGroup.propTypes = {
+FilesSidebarGroup.propTypes = {
     id: PropTypes.any.isRequired,
     name: PropTypes.string.isRequired,
     collapsed: PropTypes.bool,
@@ -92,7 +92,7 @@ FileSidebarGroup.propTypes = {
     onItemStatusChangeListener: PropTypes.func,
 };
 
-class FileSidebar extends List {
+class FilesSidebar extends List {
     constructor (props) {
         super(props);
     }
@@ -119,10 +119,10 @@ class FileSidebar extends List {
     }
 }
 
-FileSidebar.propTypes = {
+FilesSidebar.propTypes = {
     onItemClickListener: PropTypes.func,
     onItemEditClickListener: PropTypes.func,
     onItemStatusChangeListener: PropTypes.func,
 };
 
-export default FileSidebar;
+export default FilesSidebar;

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import List from './base/List';
-import ListItem from './base/ListItem';
+import List from './commons/List';
+import ListItem from './commons/ListItem';
 
-export class PrimarySidebarItem extends ListItem {
+export class TabBarItem extends ListItem {
     constructor (props) {
         super(props);
     }
@@ -13,13 +13,13 @@ export class PrimarySidebarItem extends ListItem {
     }
 }
 
-PrimarySidebarItem.propTypes = {
+TabBarItem.propTypes = {
     id: PropTypes.any.isRequired,
     name: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
 };
 
-class PrimarySidebar extends List {
+class TabBar extends List {
     constructor (props) {
         super(props);
     }
@@ -31,4 +31,4 @@ class PrimarySidebar extends List {
     }
 }
 
-export default PrimarySidebar;
+export default TabBar;

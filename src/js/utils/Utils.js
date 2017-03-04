@@ -6,3 +6,7 @@ export function checkListener (func) {
     }
     return func;
 }
+
+export function noop() {
+
+}
