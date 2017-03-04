@@ -1,8 +1,9 @@
 var path = require('path');
 var webpack = require('webpack');
+
 module.exports = {
     cache: true,
-    target: 'atom',
+    target: 'electron',
     devtool: 'source-map',
     entry: {
         main: './src/js/main',
@@ -12,6 +13,9 @@ module.exports = {
         filename: '[name].js',
         chunkFilename: '[chunkhash].js',
         sourceMapFilename: '[name].map'
+    },
+    node: {
+        __dirname: false
     },
     module: {
         loaders: [
