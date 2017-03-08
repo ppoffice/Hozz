@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { APP_NAME } from './config';
-import App from './component/App';
+import App from './components/App';
 
 /**
  * Set main window title

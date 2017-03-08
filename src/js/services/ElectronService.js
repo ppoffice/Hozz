@@ -16,7 +16,7 @@ const setDockIconVisibility = () => {
     } else {
         app.dock.hide();
     }
-}
+};
 
 /**
  * Focus to the current window
@@ -29,6 +29,6 @@ const focusCurrentWindow = () => {
         browserWindow.restore();
     browserWindow.focus();
     setDockIconVisibility();
-}
+};
 
 export default { remote, Menu, MenuItem, Tray, focusCurrentWindow }

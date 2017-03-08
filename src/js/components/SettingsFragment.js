@@ -17,8 +17,8 @@ class SettingsFragment extends Component {
         return (<div className="app-fragment" id="app-fragment-settings">
                     <SettingsSidebar activeId="ie" onItemClickListener={ id => console.log(id) }>
                         <SettingsSidebarItem id="ie" icon="import_export" name="Import/Export" />
-                        <SettingsSidebarItem id="sync" icon="sync" name="Sync" />
-                        <SettingsSidebarItem id="lang" icon="language" name="Language" />
+                        <SettingsSidebarItem id="editor" icon="edit" name="Editor" />
+                        <SettingsSidebarItem id="translate" icon="language" name="Language" />
                         <SettingsSidebarItem id="about" icon="lightbulb_outline" name="About" />
                     </SettingsSidebar>
                     <MainContainer>
@@ -35,11 +35,15 @@ class SettingsFragment extends Component {
                                 <button>To Surge</button>
                             </div>
                         </Section>
-                        <Section id="sync" title="Sync">
-                            <button>Start Syncing</button>
-                            <div>
-                                <p>Syncing History</p>
-                            </div>
+                        <Section id="editor" title="Editor">
+                            <Select
+                                clearable={ false }
+                                searchable={ false }
+                                className="language-select"
+                                name={ "English(US)" }
+                                value={ "en-US" }
+                                options={ [] }
+                                onChange={ null } />
                         </Section>
                         <Section id="lang" title="Language">
                             <Select
@@ -52,7 +56,7 @@ class SettingsFragment extends Component {
                                 onChange={ null } />
                         </Section>
                         <Section id="about" title="About">
-                            { APP_NAME } by { APP_AUTHOR }
+                            { APP_NAME } by { APP_AUTHOR }\n
                             Current Version: { APP_VERSION }
                         </Section>
                     </MainContainer>

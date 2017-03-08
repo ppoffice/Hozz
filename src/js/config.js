@@ -1,5 +1,8 @@
 const path = require('path');
 
+import Electron from './services/ElectronService';
+
+const process = Electron.remote.process;
 const {
     npm_package_name,
     npm_package_version,

@@ -31,11 +31,13 @@
     "codemirror": "^5.10.0",
     "electron-packager": "^8.5.2",
     "electron-prebuilt": "^1.4.13",
+    "electron-sudo": "git+https://github.com/ppoffice/electron-sudo.git",
     "gulp": "^3.9.0",
     "gulp-clean": "^0.3.1",
     "gulp-convert-newline": "0.0.3",
     "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.7",
+    "immutability-helper": "^2.1.2",
     "json-loader": "^0.5.4",
     "jszip": "^3.1.3",
     "keymirror": "^0.1.1",
@@ -49,8 +51,5 @@
     "react-select": "^1.0.0-beta8",
     "uid": "0.0.2",
     "webpack": "^2.2.1"
-  },
-  "dependencies": {
-    "electron-sudo": "git+https://github.com/ppoffice/electron-sudo.git"
   }
 }

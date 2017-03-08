@@ -1,5 +1,7 @@
 @import 'normalize';
-@import 'react-select';
+@import '../../node_modules/react-select/dist/react-select';
+@import '../../node_modules/codemirror/lib/codemirror';
+@import '../../node_modules/codemirror/theme/monokai';
 
 $app-layout-padding: 15px;
 $app-layout-border-radius: 4px;
@@ -32,7 +34,7 @@ $app-color-border-grey: rgb(204, 204, 204);
 }
 
 button {
-    padding: 7px 12px;
+    padding: 6px 12px;
     border-radius: 3px;
     background-color: white;
     border: 1px solid $app-color-border-grey;
@@ -47,12 +49,38 @@ button {
     }
 }
 
+.Select--single {
+    max-width: 200px;
+    * {
+        cursor: pointer;
+    }
+    .Select-control {
+        height: auto;
+    }
+    .Select-placeholder,
+    :not(.Select--multi)>.Select-control .Select-value {
+        padding: 6px 10px;
+        line-height: 18px;
+    }
+    .Select-input {
+        height: 32px;
+    }
+    .Select-option.is-focused {
+        color: white;
+        background-color: $app-color-theme;
+    }
+    &.is-focused:not(.is-open)>.Select-control {
+        box-shadow: none;
+        border-color: darken($app-color-theme, 10%);
+    }
+}
+
 body {
     cursor: default;
     -webkit-user-select: none;
     font: 12px $app-font-family;
     .iconfont {
-        -webkit-text-stroke-width: 0px;
+        -webkit-text-stroke-width: 0;
     }
 }
 
@@ -156,31 +184,9 @@ body {
         padding-top: 40px;
         left: $app-secondary-sidebar-width;
     }
-    .language-select {
-        max-width: 200px;
-        * {
-            cursor: pointer;
-        }
-        .Select-control {
-            height: auto;
-        }
-        .Select-placeholder,
-        :not(.Select--multi)>.Select-control .Select-value {
-            padding: 8px 10px;
-            line-height: 18px;
-        }
-        .Select-option.is-focused {
-            color: white;
-            background-color: $app-color-theme;
-        }
-        &.is-focused:not(.is-open)>.Select-control {
-            box-shadow: none;
-            border-color: darken($app-color-theme, 10%);
-        }
-    }
 }
 
-.app-file-sidebar {
+.app-files-sidebar {
     .app-secondary-sidebar-title {
         .app-window-draggable {
             display: block;
@@ -219,7 +225,12 @@ body {
             border-radius: 50%;
             display: inline-block;
             left: $app-layout-padding;
-            background: $app-color-theme;
+            &.on {
+                background: $app-color-theme;
+            }
+            &.off {
+                background: $app-color-dark;
+            }
         }
         .edit {
             display: none;
@@ -258,7 +269,6 @@ body {
             background: $app-color-dark;
             .app-file-group-center {
                 padding: 7px 40px;
-                cursor: pointer;
             }
             .edit {
                 right: $app-layout-padding + 20px;
@@ -314,7 +324,7 @@ body {
 
 .app-titlebar {
     top: 0;
-    left: 0;
+    left: 90px;
     right: 90px;
     height: 40px;
     padding: 10px 0;
@@ -349,9 +359,27 @@ body {
     }
 }
 
+.app-editor {
+    left: 0;
+    right: 0;
+    top: 40px;
+    bottom: 0;
+    position: absolute;
+    .ReactCodeMirror {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        .CodeMirror {
+            height: 100%;
+        }
+    }
+}
+
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 ::-webkit-scrollbar-button {
     display: none;
@@ -363,6 +391,6 @@ body {
     background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #8C8C8C;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.5);
 }

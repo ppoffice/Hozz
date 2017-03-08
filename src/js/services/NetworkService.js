@@ -9,7 +9,7 @@ const read = (url) => {
     return fetch(url).then((response) => {
         return Promise.resolve(response.text());
     });
-}
+};
 
 /**
  * Download a file from a URL into a buffer
@@ -19,14 +19,14 @@ const read = (url) => {
 const download = (url) => {
     return fetch(url).then((response) => {
         return new Promise((resolve, reject) => {
-            const bufs = [];
+            const buffer = [];
             const readable = response.body;
-            readable.on('data', bufs.push)
-            .on('end', () => { resolve(Buffer.concat(bufs)); })
+            readable.on('data', buffer.push)
+            .on('end', () => { resolve(Buffer.concat(buffer)); })
             .on('error', reject);
         });
     });
-}
+};
 
 export default {
     read, download
