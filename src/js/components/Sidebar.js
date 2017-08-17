@@ -84,7 +84,7 @@ class Sidebar extends Component {
     }
 
     __renderSidebarItem (item) {
-        const { activeUid, onItemEdit, onItemRemove, onItemStatusChange } = this.props;
+        const { activeUid, onItemEdit, onItemSync, onItemRemove, onItemStatusChange } = this.props;
         if (!item) {
             return null;
         }
@@ -95,6 +95,7 @@ class Sidebar extends Component {
                     onClick={ this.__onItemClick.bind(this, item) }
                     onStatusChange={ onItemStatusChange.bind(null, item) }
                     onEdit={ item.uid !== TOTAL_HOSTS_UID ? onItemEdit.bind(null, item) : null }
+                    onSync={ item.uid !== TOTAL_HOSTS_UID ? onItemSync.bind(null, item) : null }
                     onRemove={ item.uid !== TOTAL_HOSTS_UID ? onItemRemove.bind(null, item) : null } />)
     }
 

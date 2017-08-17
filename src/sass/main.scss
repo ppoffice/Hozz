@@ -159,6 +159,7 @@ button {
     position: relative;
     &:hover {
         background-color: rgba(255, 255, 255, 0.05);
+        .sync,
         .edit,
         .delete {
             display: inline-block;
@@ -168,6 +169,7 @@ button {
         background-color: rgba(255, 255, 255, 0.1);
         * {
             color: white;
+            fill: white;
         }
     }
     &.gu-mirror {
@@ -176,6 +178,7 @@ button {
     &.gu-transit {
         background-color: darken($background-dark, 10%);
     }
+    .sync,
     .edit,
     .status,
     .delete {
@@ -220,6 +223,7 @@ button {
             }
         }
     }
+    .sync,
     .edit,
     .delete {
         width: 14px;
@@ -228,12 +232,21 @@ button {
         font-size: 14px;
         margin-top: -7px;
     }
+    .sync {
+        right: 55px;
+    }
     .edit {
         right: 35px;
     }
     .delete {
         right: 15px;
     }
+}
+.Icon {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  fill: $text-light;
 }
 
 .main-container,

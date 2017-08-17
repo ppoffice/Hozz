@@ -36,6 +36,7 @@
     "gulp-sass": "^2.1.1",
     "gulp-util": "^3.0.7",
     "json-loader": "^0.5.4",
+    "svg-sprite-loader": "0.0.18",
     "jszip": "^2.5.0",
     "keymirror": "^0.1.1",
     "mkdirp": "^0.5.1",

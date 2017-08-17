@@ -33,8 +33,9 @@ class App extends Component {
         this.state = {
             snack: null,
             manifest: null,
-            activeUid: null,
+            activeUid: TOTAL_HOSTS_UID,
             editingUid: null,
+            syncingUid: null,
             searchText: '',
         }
     }
@@ -121,11 +122,13 @@ class App extends Component {
         }
     }
 
-    __onHostsClick (item) {
+    __onHostsClick (item, e) {
+        e && e.stopPropagation && e.stopPropagation();
         this.setState({ activeUid: item.uid });
     }
 
-    __onHostsRemove (item) {
+    __onHostsRemove (item, e) {
+        e && e.stopPropagation && e.stopPropagation();
         const { manifest } = this.state;
         manifest.removeHosts(item).commit();
         item.remove().then(() => {
@@ -133,7 +136,8 @@ class App extends Component {
         });
     }
 
-    __onHostsStatusChange (item) {
+    __onHostsStatusChange (item, e) {
+        e && e.stopPropagation && e.stopPropagation();
         const { manifest } = this.state;
         if (item.uid !== TOTAL_HOSTS_UID) {
             if (manifest.online) {
@@ -181,8 +185,13 @@ class App extends Component {
         this.setState({ editingUid: null });
     }
 
-    __onHostsEdit (hosts) {
+    __onHostsEdit (hosts, e) {
+        e && e.stopPropagation && e.stopPropagation();
         this.setState({ editingUid: hosts.uid });
+    }
+    __onHostsSync (hosts, e) {
+        e && e.stopPropagation && e.stopPropagation();
+        this.__onUpdateHostsClick(hosts);
     }
 
     __onSearchChange (text) {
@@ -243,7 +252,7 @@ class App extends Component {
     }
 
     render() {
-        const { snack, manifest, activeUid, editingUid, searchText } = this.state;
+        const { snack, manifest, activeUid, editingUid, syncingUid, searchText } = this.state;
         let list = manifest ? manifest.getHostsList() : [];
         if (searchText) {
             list = list.filter((hosts) => {
@@ -281,6 +290,7 @@ class App extends Component {
                                 totalHosts={ this.totalHosts }
                                 editingHosts={ editingHosts }
                                 onItemEdit={ this.__onHostsEdit.bind(this) }
+                                onItemSync={ this.__onHostsSync.bind(this) }
                                 onItemClick={ this.__onHostsClick.bind(this) }
                                 onItemRemove={ this.__onHostsRemove.bind(this) }
                                 onSearchChange={ this.__onSearchChange.bind(this) }

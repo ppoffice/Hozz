@@ -37,7 +37,14 @@ module.exports = {
             {
                 loader: 'json-loader',
                 test: /\.json?$/,
-            }
+            },
+            {
+                test: /\.svg$/,
+                loader: 'svg-sprite-loader',
+                include: [
+                    path.resolve(__dirname, 'src/assets/images'),
+                ],
+            },
         ]
     },
     plugins: [
