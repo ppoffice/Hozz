@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
 import Lang from '../backend/language';
+import Icon from './Icon';
 
 class SidebarItem extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class SidebarItem extends Component {
     }
 
     render() {
-        const { item, active, onEdit, onClick, onRemove } = this.props;
+        const { item, active, onEdit, onSync, onClick, onRemove } = this.props;
         const classNames = cx({
             'sidebar-item': true,
             'active': active,
@@ -29,10 +30,11 @@ class SidebarItem extends Component {
                     <div className="content">
                         <p className="name">{ item.name }</p>
                         <p className="meta">
-                            { !!item.url ? <i className={ "iconfont cloud" + (item.isSyncing ? " syncing" : "")}>&#xe604;</i> : null}
+                            { !!item.url ? <i className={ "iconfont cloud" + (item.isSyncing ? " syncing" : "")} onClick={ onSync }>&#xe604;</i> : null}
                             <span>{ Lang.get('main.hosts_rules', item.count) }</span>
                         </p>
                     </div>
+                    { !!item.url ? <i className="iconfont sync" onClick={ onSync }><Icon symbol="sync" title="同步"/></i> : null}
                     { onEdit ? <i className="iconfont edit" onClick={ onEdit }>&#xe603;</i> : null }
                     { onRemove ? <i className="iconfont delete" onClick={ onRemove }>&#xe608;</i> : null }
                 </div>);
