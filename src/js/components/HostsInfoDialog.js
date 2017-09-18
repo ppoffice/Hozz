@@ -51,7 +51,7 @@ class HostsInfoDialog extends Component {
                                 type="text"
                                 defaultValue={ url }
                                 onChange={ this.__onUrlChange.bind(this) }
-                                onKeyDown={ this.__onPressEnter(this) }
+                                onKeyDown={ this.__onPressEnter.bind(this) }
                                 placeholder={ Lang.get('main.remote_source_url') } />
                         </div>
                     </div>
