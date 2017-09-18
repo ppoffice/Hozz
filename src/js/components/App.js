@@ -33,7 +33,7 @@ class App extends Component {
         this.state = {
             snack: null,
             manifest: null,
-            activeUid: null,
+            activeUid: TOTAL_HOSTS_UID,
             editingUid: null,
             searchText: '',
         }
@@ -121,11 +121,13 @@ class App extends Component {
         }
     }
 
-    __onHostsClick (item) {
+    __onHostsClick (item, e) {
+		e && e.stopPropagation && e.stopPropagation();
         this.setState({ activeUid: item.uid });
     }
 
-    __onHostsRemove (item) {
+    __onHostsRemove (item, e) {
+		e && e.stopPropagation && e.stopPropagation();
         const { manifest } = this.state;
         manifest.removeHosts(item).commit();
         item.remove().then(() => {
@@ -133,7 +135,8 @@ class App extends Component {
         });
     }
 
-    __onHostsStatusChange (item) {
+    __onHostsStatusChange (item, e) {
+		e && e.stopPropagation && e.stopPropagation();
         const { manifest } = this.state;
         if (item.uid !== TOTAL_HOSTS_UID) {
             if (manifest.online) {
@@ -181,7 +184,8 @@ class App extends Component {
         this.setState({ editingUid: null });
     }
 
-    __onHostsEdit (hosts) {
+    __onHostsEdit (hosts, e) {
+		e && e.stopPropagation && e.stopPropagation();
         this.setState({ editingUid: hosts.uid });
     }
 
