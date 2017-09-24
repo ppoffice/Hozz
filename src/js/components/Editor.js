@@ -29,12 +29,25 @@ CodeMirror.defineMode('hosts', function () {
 const codemirrorOptions = {
     mode: 'hosts',
     lineNumbers: true,
+    extraKeys: {
+        "Ctrl-/": function(instance) {
+            let doc = instance.doc;
+            let lineHandle = doc.getLineHandle(doc.getCursor().line);
+            if (lineHandle.text.trim().startsWith("#")) {
+                lineHandle.text = lineHandle.text.trim().substring(1);
+            } else {
+                lineHandle.text = '#' + lineHandle.text;
+            }
+            instance.refresh();
+        }
+    }
 };
 
 class Editor extends Component {
     constructor(props) {
         super(props);
         this.codemirrorOptions = codemirrorOptions;
+        this.codemirrorOptions.extraKeys["Ctrl-S"] = this.__onFocusChange.bind(this, false);
         this.state = {
             value: props.value
         };
@@ -66,13 +79,13 @@ class Editor extends Component {
 
     render() {
         return (<div>
-                    <ReactCodeMirror
-                        ref="codemirror"
-                        value={ this.state.value }
-                        options={ this.codemirrorOptions }
-                        onChange={ this.__onChange.bind(this) }
-                        onFocusChange={ this.__onFocusChange.bind(this) }  />
-                </div>);
+            <ReactCodeMirror
+                ref="codemirror"
+                value={ this.state.value }
+                options={ this.codemirrorOptions }
+                onChange={ this.__onChange.bind(this) }
+                onFocusChange={ this.__onFocusChange.bind(this) }  />
+        </div>);
     }
 }
 
